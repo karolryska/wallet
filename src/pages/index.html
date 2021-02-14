@@ -15,8 +15,8 @@
 <body>
   <div class="wrapper">
     <div class="info">
-      <p class="info__month">february</p>
-      <p class="info__sum">200</p>
+      <p class="info__month">luty</p>
+      <p class="info__sum"></p>
     </div>
     <nav class="navigation" id="dat">
       <div class="navigation__wrapper">
@@ -32,12 +32,22 @@
     </nav>
     <section class="add form">
       <form action="" class="form__container">
-        <p class="form__info">date</p>
-        <input class="form__input form__input--add" type="date">
-        <p class="form__info">name</p>
-        <input class="form__input form__input--add" type="text">
-        <p class="add__info form__info">price</p>
-        <input class="form__input form__input--add" type="number" step="0.01">
+        <p class="form__input-container">
+          <label class="form__label" for="date">data</label>
+          <input class="form__input form__input--add" id="date" type="date">
+        </p>
+        <p class="form__input-container">
+          <label class="form__label" for="categories">kategoria</label>
+          <select class="form__list form__input form__input--add" name="" id=""></select>
+        </p>
+        <p class="form__input-container">
+          <label class="form__label" for="name">opis</label>
+          <input class="form__input form__input--add" id="name" type="text">
+        </p>
+        <p class="form__input-container">
+          <label class="form__label" for="price">cena</label>
+          <input class="form__input form__input--add" id="price" type="number">
+        </p>
         <div class="form__buttons">
           <button type="button" class="form-button form-button--add">
             <img src="../assets/icons/icon_add.svg" alt="">
@@ -47,12 +57,22 @@
     </section>
     <section class="edit form">
       <form action="" class="form__container">
-        <p class="form__info">date</p>
-        <input class="form__input form__input--edit" type="date">
-        <p class="form__info">name</p>
-        <input class="form__input form__input--edit" type="text">
-        <p class="form__info">price</p>
-        <input class="form__input form__input--edit" type="number" step="0.01">
+        <p class="form__input-container">
+          <label class="form__label" for="date">data</label>
+          <input class="form__input form__input--edit" id="date" type="date">
+        </p>
+        <p class="form__input-container">
+          <label class="form__label" for="categories">kategoria</label>
+          <select class="form__list form__input form__input--edit" name="" id=""></select>
+        </p>
+        <p class="form__input-container">
+          <label class="form__label" for="name">opis</label>
+          <input class="form__input form__input--edit" id="name" type="text">
+        </p>
+        <p class="form__input-container">
+          <label class="form__label" for="price">cena</label>
+          <input class="form__input form__input--edit" id="price" type="number">
+        </p>
         <div class="form__buttons">
           <button type="button" class="form-button form-button--delete">
             <img src="../assets/icons/icon_delete.svg" alt="">

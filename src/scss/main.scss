@@ -2,6 +2,7 @@
 
 @import "_variables";
 @import "modules/form.scss";
+@import "modules/categories.scss";
 
 * {
     margin: 0;
@@ -142,11 +143,14 @@ body {
     margin-top: 10px;
     padding: 8px 8px 8px 18px;
     border-radius: 12px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: space-between;
     position: relative;
     overflow: hidden;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
 
     &::before {
         content: "";
@@ -155,12 +159,23 @@ body {
         left: 0;
         height: 100%;
         width: 12px;
-        background-color: pink;
     }
 
     &__content {
         margin: 0;
         font-size: 14px;
         font-weight: 400;
+
+        &--price {
+            text-align: right;
+        }
+
+        &--name {
+            font-size: 12px;
+            font-weight: 300;
+            margin-top: 4px;
+        }
     }
+
+
 }

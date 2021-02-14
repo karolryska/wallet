@@ -4,7 +4,13 @@
     justify-content: center;
     align-items: center;
 
-    &__info {
+    &__input-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__label {
         font-family: $font-main;
         font-size: 12px;
         font-weight: 300;
@@ -15,6 +21,7 @@
 
     &__input {
         height: 30px;
+        width: 100%;
         padding: 4px 8px;
         border-radius: 10px;
         border: none;

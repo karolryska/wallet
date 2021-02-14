@@ -1,0 +1,13 @@
+.item {
+    &--yellow::before {
+        background-color: $category-yellow;
+    }
+
+    &--red::before {
+        background-color: $category-red;
+    }
+
+    &--green::before {
+        background-color: $category-green;
+    }
+}
