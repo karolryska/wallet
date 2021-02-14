@@ -1,7 +1,7 @@
 @import "~normalize.css";
 
 @import "_variables";
-@import "modules/add.scss";
+@import "modules/form.scss";
 
 * {
     margin: 0;
@@ -162,19 +162,5 @@ body {
         margin: 0;
         font-size: 14px;
         font-weight: 400;
-    }
-}
-
-
-.edit {
-    display: none;
-    height: 100vh;
-    width: 100%;
-    background-color: grey;
-    justify-content: center;
-    align-items: center;
-
-    &--active {
-        display: flex;
     }
 }

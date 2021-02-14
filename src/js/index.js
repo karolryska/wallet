@@ -1,18 +1,17 @@
 import '../scss/main.scss';
 
-const addButton = document.querySelector(".add__add-button");
-const editButton = document.querySelector(".edit__add-button");
+const addButton = document.querySelector(".form-button--add");
+const deleteButton = document.querySelector(".form-button--delete");
+const saveButton = document.querySelector(".form-button--save");
 const navAddButton = document.querySelector(".navigation__button--add");
 const addSection = document.querySelector(".add");
 const editSection = document.querySelector(".edit");
 
 navAddButton.addEventListener("click", () => {
     addSection.classList.add("add--active");
-    console.log("add ok");
 })
 
-
-let monthObj = {};
+let receipts = {};
 
 class Receipt {
     constructor(date, name, price) {
@@ -20,25 +19,13 @@ class Receipt {
         this.name = name;
         this.price = price;
     }
-
-    editItem(newDate, newName, newPrice) {
-        this.date = newDate;
-        this.name = newName;
-        this.price = newPrice;
-    }
-    // addDateItem(date) {
-    //     monthObj[date] = [];
-    //     console.log(monthObj[date]);
-    //     monthObj[date].push(this);
-    //     // console.log(monthObj);
-    // }
 }
 
 const checkDate = (date) => {
-    return monthObj[date] ? true : false
+    return receipts[date] ? true : false
 }
 
-const addNewDate = (date) => {
+const addNewDateHtml = (date) => {
     const month = document.querySelector(".content__list");
     month.innerHTML += `<li class="day">
                             <div class="day__container">
@@ -47,15 +34,15 @@ const addNewDate = (date) => {
                                 </ul>
                             </div>
                         </li>`;
-    monthObj[date] = [];
+    receipts[date] = [];
 }
 
 const reloadDateItemsHtml = (date) => {
     const currentDate = document.getElementById(date);
     currentDate.innerHTML = "";
 
-    const currentDateItems = monthObj[date];
-    for (let i = 0; i < monthObj[date].length; i++) {
+    const currentDateItems = receipts[date];
+    for (let i = 0; i < receipts[date].length; i++) {
         currentDate.innerHTML += `<li id="${i}" class="day__item item">
                                     <p class="item__content item__content--name">${currentDateItems[i].name}</p>
                                     <p class="item__content item__content--price">${currentDateItems[i].price}</p>
@@ -69,7 +56,7 @@ const sumOfPrices = (month) => {
         month[date].forEach(item => {
             sum += Number(item.price);
         });
-      }
+    }
     return sum
 }
 
@@ -79,30 +66,19 @@ const reloadSumHtml = (sum) => {
 }
 
 const addItem = (date, name, price) => {
-    monthObj[date].push(new Receipt(date, name, price));
-    reloadDateItemsHtml(date, name, price); 
-    const sum = sumOfPrices(monthObj);
+    if (!checkDate(date)) addNewDateHtml(date);
+    receipts[date].push(new Receipt(date, name, price));
+    reloadDateItemsHtml(date, name, price);
+    const sum = sumOfPrices(receipts);
     reloadSumHtml(sum);
 }
 
-addButton.addEventListener("click", () => {
-    const inputs = [...document.querySelectorAll(".add__input")];
-    const inputsValue = inputs.map(input => input.value);
-    let [date, name, price] = inputsValue;
-
-    if (!checkDate(date)) addNewDate(date);
-    addItem(date, name, price);
-   
-    inputs.forEach(input => input.value ="");
-    addSection.classList.remove("add--active");
-})
-
-
+let editItemInfo = [];
 
 const identifyItemToEdit = (clickedItem) => {
     const date = clickedItem.target.parentElement.id;
     const index = clickedItem.target.id;
-    const dateItems = monthObj[date];
+    const dateItems = receipts[date];
     const item = dateItems[index];
     return [item, date, index]
 }
@@ -110,7 +86,7 @@ const identifyItemToEdit = (clickedItem) => {
 const fillEditForm = (itemToEdit) => {
     let [item, date, index] = itemToEdit;
 
-    const emptyInputs = [...document.querySelectorAll(".edit__input")];
+    const emptyInputs = [...document.querySelectorAll(".form__input--edit")];
     let [dateInput, nameInput, priceInput] = emptyInputs;
 
     dateInput.value = item.date;
@@ -118,48 +94,60 @@ const fillEditForm = (itemToEdit) => {
     priceInput.value = item.price;
 }
 
-let editItemInfo = [];
+const deleteEmptyDates = (date) => {
+    if (!receipts[date].length) {
+        delete receipts[date];
+        document.getElementById(date).parentElement.parentElement.remove();
+    } else {
+        reloadDateItemsHtml(date);
+    }
+}
+
+const deleteItem = () => {
+    const [deleteItem, deleteItemDate, deleteItemIndex] = editItemInfo;
+    receipts[deleteItemDate].splice(deleteItemIndex, 1);
+    deleteEmptyDates(deleteItemDate);
+    const sum = sumOfPrices(receipts);
+    reloadSumHtml(sum);
+}
+
+const editItem = () => {
+    deleteItem();
+
+    const inputs = [...document.querySelectorAll(".form__input--edit")];
+    const inputsValue = inputs.map(input => input.value);
+    let [date, name, price] = inputsValue;
+    addItem(date, name, price);
+}
+
+addButton.addEventListener("click", () => {
+    const inputs = [...document.querySelectorAll(".form__input--add")];
+    const inputsValue = inputs.map(input => input.value);
+    const [date, name, price] = inputsValue;
+    addItem(date, name, price);
+
+    inputs.forEach(input => input.value = "");
+    addSection.classList.remove("add--active");
+})
 
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("item")) {
         editItemInfo = identifyItemToEdit(e);
-        const itemToEdit = identifyItemToEdit(e)
-        fillEditForm(itemToEdit);
+        fillEditForm(editItemInfo);
         editSection.classList.add("edit--active");
     }
 })
 
-const deleteItem = (date, index) => {
-    monthObj[date].splice(index, 1);
-}
-
-const editItem = () => {
-    const [editItem, editItemDate, editItemIndex] = editItemInfo;
-    deleteItem(editItemDate, editItemIndex)
-    
-    const inputs = [...document.querySelectorAll(".edit__input")];
-    const inputsValue = inputs.map(input => input.value);
-    let [date, name, price] = inputsValue;
-  
-    if (!checkDate(date)) addNewDate(date);
-    monthObj[date].push(new Receipt(date, name, price));
-
-    if  (!monthObj[editItemDate].length) {
-        delete monthObj[editItemDate];
-        document.getElementById(editItemDate).parentElement.parentElement.remove();
-    } else {
-        reloadDateItemsHtml(editItemDate);
-    }
-    reloadDateItemsHtml(date);
-    const sum = sumOfPrices(monthObj);
-    reloadSumHtml(sum);
+saveButton.addEventListener("click", () => {
+    editItem();
     editSection.classList.remove("edit--active");
-}
+});
 
-editButton.addEventListener("click", editItem)
-deleteButton.addEventListener("click", editItem)
+deleteButton.addEventListener("click", () => {
+    deleteItem();
+    editSection.classList.remove("edit--active");
+});
 
-
-
-
-
+addItem("2021-02-01", "Biedronka", 15);
+addItem("2021-02-01", "Lidl", 54);
+addItem("2021-02-03", "Tesco", 24);

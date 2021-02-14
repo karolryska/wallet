@@ -1,0 +1,82 @@
+.form {
+    height: 100vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+
+    &__info {
+        font-family: $font-main;
+        font-size: 12px;
+        font-weight: 300;
+        letter-spacing: 1px;
+        color: $white;
+        margin: 0 0 10px;
+    }
+
+    &__input {
+        height: 30px;
+        padding: 4px 8px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+        margin: 0 0 32px;
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    &__buttons {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around
+    }
+}
+
+.add {
+    display: none;
+    background-color: $text-dark;
+
+    &--active {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+    }
+}
+
+.edit {
+    display: none;
+    background-color: $navigation;
+
+    &--active {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+    }
+}
+
+.form-button {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    border: none;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--add {
+        background-color: $background;
+    }
+
+    &--delete {
+        background-color: $red;
+    }
+
+    &--save {
+        background-color: $background;
+    }
+}
