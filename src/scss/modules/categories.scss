@@ -10,4 +10,8 @@
     &--green::before {
         background-color: $category-green;
     }
+
+    &--pink::before {
+        background-color: $category-pink;
+    }
 }

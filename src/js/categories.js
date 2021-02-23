@@ -37,16 +37,26 @@ categoriesLink.addEventListener("click", () => {
 
 const categoriesList = document.querySelector(".categories__list");
 
-const loadCategoryInfo = (category) => {
+const loadCategoryName = (category) => {
     const categoryName = document.querySelector(".category__name");
     categoryName.innerHTML = category;
 }
+
+const setCategoryColor = (category) => {
+    const color = categories[category];
+    console.log(color);
+    document.getElementById(color).checked = true;
+}
+
+let categoryEdit;
+
 categoriesList.addEventListener("click", (e) => {
     if (e.target.classList.contains("categories__item")) {
-        const item = e.target.innerHTML;
+        const category = e.target.innerHTML;
+        loadCategoryName(category);
+        setCategoryColor(category);
+        categoryEdit = category;
         document.querySelector(".category").classList.toggle("category--active");
-        // document.querySelector(".categories").classList.toggle("categories--active");
-        loadCategoryInfo(item);
     };
 })
 
@@ -54,17 +64,8 @@ const backArrowSettings = document.querySelector(".settings__arrow");
 const backArrowCategories = document.querySelector(".categories__arrow");
 const backArrowCategory = document.querySelector(".category__arrow");
 
-
-
 const backToCategories = () => {
-    document.querySelector(".category").classList.toggle("category--active")
-    const colors = document.getElementsByName("color");
-    let selectedColor;
-
-    for(var i = 0; i < colors.length; i++) {
-        if(colors[i].checked) selectedColor = colors[i].value;
-    }
-    console.log(selectedColor);
+    document.querySelector(".category").classList.toggle("category--active");
 }
 const backToSettings = () => {
     document.querySelector(".categories").classList.toggle("categories--active");
@@ -77,4 +78,26 @@ backArrowSettings.addEventListener("click", backToMain);
 backArrowCategory.addEventListener("click", backToCategories);
 backArrowCategories.addEventListener("click", backToSettings);
 
+const colorsWrapper = document.querySelector(".category");
 
+const changeCategoryColor = (newColor) => {
+    categories[categoryEdit] = newColor;
+}
+
+const reloadColor = (originalColor, newColor) => {
+    const itemsToEdit = [...document.querySelectorAll(`.item--${originalColor}`)];
+    itemsToEdit.forEach(item => {
+        item.classList.remove(`item--${originalColor}`);
+        item.classList.add(`item--${newColor}`);
+    })
+}
+
+colorsWrapper.addEventListener("click", (e) => {
+    if (e.target.classList.contains("colors__input")) {
+        const originalColor = categories[categoryEdit];
+        const newColor = e.target.id;
+    changeCategoryColor(newColor);
+    reloadColor(originalColor, newColor);
+    }
+    
+})
