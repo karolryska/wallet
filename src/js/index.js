@@ -1,5 +1,7 @@
 import '../scss/main.scss';
 import {categories} from './categories'
+import './settings'
+
 
 const addButton = document.querySelector(".form-button--add");
 const deleteButton = document.querySelector(".form-button--delete");

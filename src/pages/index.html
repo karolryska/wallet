@@ -20,9 +20,10 @@
     </div>
     <nav class="navigation" id="dat">
       <div class="navigation__wrapper">
-        <button class="navigation__additional-button additional-button button--settings button-additional">
+        <a href=""><button class="navigation__additional-button additional-button button--settings button-additional">
           <img class="button-additional__svg" src="../assets/icons/icon_settings.svg" alt="">
-        </button>
+        </button></a>
+        
         <button class="navigation__main-button main-button  navigation__button--add button-main"><img
             class="main-button__svg" src="../assets/icons/icon_add.svg" alt=""></button>
         <button class="navigation__additional-button additional-button button--statistics button-additional">
@@ -87,6 +88,80 @@
       <ul class="content__list">
       </ul>
     </section>
+  </div>
+  <div class="settings">
+    <div class="settings__header">
+      <button class="settings__arrow"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
+      <p class="settings__title">ustawienia</p>
+    </div>
+    <ul class="settings__list">
+      <li class="settings__item settings__item--categories">
+        <p class="settings__name">kategorie</p>
+      </li>
+      <li class="settings__item settings__item--limits">
+        <p class="settings__name">limity</p>
+      </li>
+      <li class="settings__item">
+        <p>dark mode</p>
+        <input type="checkbox" id="switch" />
+      </li>
+    </ul>
+  </div>
+  <!-- <div class="settings settings--categories categories">
+    <div class="settings__header">
+      <button class="settings__arrow settings__arrow--categories"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
+      <p class="settings__title">kategorie</p>
+    </div>
+    <ul class="settings__list settings__list--categories"></ul>
+  </div>
+  <div class="settings settings--category category">
+    <div class="settings__header">
+      <button class="settings__arrow settings__arrow--category"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
+      <p class="settings__name">kategoria</p>
+    </div>
+    <div class="settings__content">
+      <p class="category__name"></p>
+      <div class="category__colors"></div>
+    </div>
+  </div> -->
+
+
+
+  <div class="categories">
+    <div class="categories__header">
+      <button class="categories__arrow"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
+      <p class="categories__title">kategorie</p>
+    </div>
+    <ul class="categories__list"></ul>
+  </div>
+  <div class="category">
+    <div class="category__header">
+      <button class="category__arrow"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
+      <p class="category__title">kategoria</p>
+    </div>
+    <div class="category__content">
+      <p class="category__description">nazwa kategorii</p>
+      <p class="category__name"></p>
+      <div class="category__colors"></div>
+    </div>
+    <div class="category__content">
+      <p class="category__description">kolor</p>
+      <div class="category__colors">
+        <input type="radio" name="color" id="yellow" value="yellow" />
+        <label for="yellow"><span class="color yellow"></span></label>
+        <input type="radio" name="color" id="red" value="red" />
+        <label for="red"><span class="color red"></span></label>
+        <input type="radio" name="color" id="green" value="green" />
+        <label for="green"><span class="color green"></span></label>
+        <input type="radio" name="color" id="pink" value="pink" />
+        <label for="pink"><span class="color pink"></span></label>
+<!-- 
+        <div class="color color--yellow"></div>
+        <div class="color color--red"></div>
+        <div class="color color--green"></div>
+        <div class="color color--pink"></div> -->
+      </div>
+    </div>
   </div>
 </body>
 
