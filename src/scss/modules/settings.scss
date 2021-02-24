@@ -61,30 +61,61 @@
 
 }
 
+
+.category__colors {
+    height: calc((100vw - 80px)/2);
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
 .color {
     display: block;
-    height: 20px;
-    width: 20px;
-    border-radius: 10px;
-    // background-color: pink;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
     margin-bottom: 10px;
 }
 
 .yellow {
-    background-color: $category-yellow;
+    &01 {
+        background-color: $yellow01;
+    }
+
+    &02 {
+        background-color: $yellow02;
+    }
+
+    &03 {
+        background-color: $yellow03;
+    }
+
+    &04 {
+        background-color: $yellow04;
+    }
 }
 
 .red {
-    background-color: $category-red;
+    &01 {
+        background-color: $red01;
+    }
+
+    &02 {
+        background-color: $red02;
+    }
+
+    &03 {
+        background-color: $red03;
+    }
+
+    &04 {
+        background-color: $red04;
+    }
+
 }
 
-.green {
-    background-color: $category-green;
-}
-
-.pink {
-    background-color: $category-pink;
-}
 
 input[type="radio"] {
     display: none;
@@ -92,6 +123,12 @@ input[type="radio"] {
     &:checked+label {
         span {
             border: 2px solid black;
+        }
+    }
+
+    &:disabled+label {
+        span {
+            opacity: 0.2;
         }
     }
 }

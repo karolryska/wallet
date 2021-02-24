@@ -1,17 +1,34 @@
 .item {
-    &--yellow::before {
-        background-color: $category-yellow;
+    &--yellow01::before {
+        background-color: $yellow01;
     }
 
-    &--red::before {
-        background-color: $category-red;
+    &--yellow02::before {
+        background-color: $yellow02;
     }
 
-    &--green::before {
-        background-color: $category-green;
+    &--yellow03::before {
+        background-color: $yellow03;
     }
 
-    &--pink::before {
-        background-color: $category-pink;
+    &--yellow04::before {
+        background-color: $yellow04;
     }
+
+    &--red01::before {
+        background-color: $red01;
+    }
+
+    &--red02::before {
+        background-color: $red02;
+    }
+
+    &--red03::before {
+        background-color: $red03;
+    }
+
+    &--red04::before {
+        background-color: $red04;
+    }
+
 }

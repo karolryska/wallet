@@ -1,7 +1,7 @@
 export const categories = {
-    "Zakupy codzienne": "yellow",
-    "Rachunki": "green",
-    "Rozrywka": "red",
+    "Zakupy codzienne": "yellow01",
+    "Rachunki": "red01",
+    "Rozrywka": "red04",
 }
 
 const selectLists = document.querySelectorAll(".form__list");
@@ -17,7 +17,6 @@ const categoriesLink = document.querySelector(".settings__item--categories");
 settingsButton.addEventListener("click", (e) => {
     e.preventDefault();
     document.querySelector(".settings").classList.add("settings--active");
-    console.log("h")
 })
 
 const loadCategoriesList = () => {
@@ -30,7 +29,6 @@ const loadCategoriesList = () => {
 }
 
 categoriesLink.addEventListener("click", () => {
-    console.log("git")
     document.querySelector(".categories").classList.add("categories--active");
     loadCategoriesList();
 });
@@ -44,8 +42,17 @@ const loadCategoryName = (category) => {
 
 const setCategoryColor = (category) => {
     const color = categories[category];
-    console.log(color);
     document.getElementById(color).checked = true;
+}
+
+const disableColorsInUse = () => {
+    const colorsInputs = [...document.querySelectorAll(".colors__input")];
+    colorsInputs.forEach((color) => {
+        color.disabled = false;
+        for (const category in categories) {
+            if (categories[category] === color.id && !color.checked) color.disabled = true;
+        }
+    })
 }
 
 let categoryEdit;
@@ -55,6 +62,7 @@ categoriesList.addEventListener("click", (e) => {
         const category = e.target.innerHTML;
         loadCategoryName(category);
         setCategoryColor(category);
+        disableColorsInUse();
         categoryEdit = category;
         document.querySelector(".category").classList.toggle("category--active");
     };
