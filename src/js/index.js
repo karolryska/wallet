@@ -1,6 +1,6 @@
 import '../scss/main.scss';
 import {categories} from './categories'
-import './settings'
+import {limits} from './settings'
 
 
 const addButton = document.querySelector(".form-button--add");
@@ -44,6 +44,13 @@ const addNewDateHtml = (date) => {
     receipts[date] = [];
 }
 
+const checkDailyLimit = (sum) => {
+    console.log(limits.daily);
+    if (sum > limits.daily) {
+        return true
+    }
+}
+
 const reloadDateItemsHtml = (date) => {
     const currentDate = document.getElementById(date);
     const currentDateContainer = currentDate.querySelector(".day__items");
@@ -64,6 +71,7 @@ const reloadDateItemsHtml = (date) => {
     }
     let currentDateSum = currentDate.querySelector(".day__sum");
     currentDateSum.textContent = dateSum;
+    if (checkDailyLimit(dateSum)) currentDateSum.classList.add("day__sum--red")
 }
 
 const sumOfPrices = (month) => {

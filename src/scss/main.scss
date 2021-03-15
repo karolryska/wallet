@@ -148,6 +148,11 @@ body {
         background-color: $white;
         padding: 4px 6px;
         border-radius: 8px;
+
+        &--red {
+            color: red;
+            font-weight: 500;
+        }
     }
 
     &__items {

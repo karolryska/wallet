@@ -1,6 +1,7 @@
 .settings,
 .categories,
-.category {
+.category,
+.limits {
     display: none;
     position: fixed;
     top: 0;
@@ -130,5 +131,26 @@ input[type="radio"] {
         span {
             opacity: 0.2;
         }
+    }
+}
+
+.limits {
+
+    &__day {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__label {
+        font-weight: 300;
+    }
+
+    &__input {
+        height: 30px;
+        max-width: 20%;
+        border-radius: 10px;
+        border: none;
     }
 }
