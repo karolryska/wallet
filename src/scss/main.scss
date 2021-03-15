@@ -127,11 +127,27 @@ body {
     display: flex;
     flex-direction: column;
 
-    &__title {
+    &__header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         margin: 0 0 8px 0;
+    }
+
+    &__title {
         font-size: 14px;
         font-weight: 500;
         color: $text-dark;
+    }
+
+    &__sum {
+        font-size: 12px;
+        font-weight: 400;
+        height: 100%;
+        background-color: $white;
+        padding: 4px 6px;
+        border-radius: 8px;
     }
 
     &__items {

@@ -31,11 +31,14 @@ const checkDate = (date) => {
 
 const addNewDateHtml = (date) => {
     const month = document.querySelector(".content__list");
-    month.innerHTML += `<li class="day">
+    month.innerHTML += `<li id="${date}" class="day">
                             <div class="day__container">
+                            <div class="day__header">
                                 <h3 class="day__title">${date}</h3>
-                                <ul  id="${date}" class="day__items">
-                                </ul>
+                                <p class="day__sum">0</p>
+                            </div>
+                            <ul class="day__items">
+                            </ul>
                             </div>
                         </li>`;
     receipts[date] = [];
@@ -43,18 +46,24 @@ const addNewDateHtml = (date) => {
 
 const reloadDateItemsHtml = (date) => {
     const currentDate = document.getElementById(date);
-    currentDate.innerHTML = "";
+    const currentDateContainer = currentDate.querySelector(".day__items");
+    currentDateContainer.innerHTML = "";
 
     const currentDateItems = receipts[date];
     
+    let dateSum = 0;
+    
     for (let i = 0; i < receipts[date].length; i++) {
         const itemCategory = currentDateItems[i].category;
-        currentDate.innerHTML += `<li id="${i}" class="day__item item item--${categories[itemCategory]}">
+        currentDateContainer.innerHTML += `<li id="${i}" class="day__item item item--${categories[itemCategory]}">
                                     <p class="item__content item__content--category">${currentDateItems[i].category}</p>
                                     <p class="item__content item__content--price">${currentDateItems[i].price}</p>
                                     <p class="item__content item__content--name">${currentDateItems[i].name}</p>
-                                </li>`
+                                </li>`;
+        dateSum += Number(currentDateItems[i].price);
     }
+    let currentDateSum = currentDate.querySelector(".day__sum");
+    currentDateSum.textContent = dateSum;
 }
 
 const sumOfPrices = (month) => {
@@ -83,7 +92,7 @@ const addItem = (date, category, name, price) => {
 let editItemInfo = [];
 
 const identifyItemToEdit = (clickedItem) => {
-    const date = clickedItem.target.parentElement.parentElement.id;
+    const date = clickedItem.target.parentElement.parentElement.parentElement.parentElement.id;
     const index = clickedItem.target.parentElement.id;
     const dateItems = receipts[date];
     const item = dateItems[index];
@@ -105,7 +114,7 @@ const fillEditForm = (itemToEdit) => {
 const deleteEmptyDates = (date) => {
     if (!receipts[date].length) {
         delete receipts[date];
-        document.getElementById(date).parentElement.parentElement.remove();
+        document.getElementById(date).remove();
     } else {
         reloadDateItemsHtml(date);
     }
