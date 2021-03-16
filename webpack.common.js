@@ -6,7 +6,7 @@ module.exports = {
   entry: {
     index: "./src/js/index.js",
     categories: "./src/js/categories.js",
-    settings: "./src/js/settings.js",
+    limits: "./src/js/limits.js",
   },
   output: {
     filename: "[name].[hash:8].js",

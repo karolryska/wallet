@@ -5,19 +5,16 @@ export const categories = {
 }
 
 const selectLists = document.querySelectorAll(".form__list");
+
 selectLists.forEach(list => {
     for (let key in categories) {
         list.innerHTML += `<option value="${key}">${key}</option>`;
     }
 })
 
-const settingsButton = document.querySelector(".button--settings");
+
 const categoriesLink = document.querySelector(".settings__item--categories");
 
-settingsButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    document.querySelector(".settings").classList.add("settings--active");
-})
 
 const loadCategoriesList = () => {
     const list = document.querySelector(".categories__list");

@@ -1,6 +1,6 @@
 import '../scss/main.scss';
 import {categories} from './categories'
-import {limits} from './settings'
+import {limits} from './limits'
 
 
 const addButton = document.querySelector(".form-button--add");
@@ -9,6 +9,7 @@ const saveButton = document.querySelector(".form-button--save");
 const navAddButton = document.querySelector(".navigation__button--add");
 const addSection = document.querySelector(".add");
 const editSection = document.querySelector(".edit");
+const settingsButton = document.querySelector(".button--settings");
 
 navAddButton.addEventListener("click", () => {
     addSection.classList.add("add--active");
@@ -45,7 +46,6 @@ const addNewDateHtml = (date) => {
 }
 
 const checkDailyLimit = (sum) => {
-    console.log(limits.daily);
     if (sum > limits.daily) {
         return true
     }
@@ -172,6 +172,11 @@ deleteButton.addEventListener("click", () => {
     deleteItem();
     editSection.classList.remove("edit--active");
 });
+
+settingsButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelector(".settings").classList.add("settings--active");
+})
 
 addItem("2021-02-01","Zakupy codzienne", "Biedronka", 154);
 addItem("2021-02-01","Rachunki", "Prąd", 120);
