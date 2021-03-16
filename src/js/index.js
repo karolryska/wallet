@@ -15,7 +15,7 @@ navAddButton.addEventListener("click", () => {
     addSection.classList.add("add--active");
 })
 
-let receipts = {};
+export let receipts = {};
 
 class Receipt {
     constructor(date, category, name, price) {
@@ -45,10 +45,8 @@ const addNewDateHtml = (date) => {
     receipts[date] = [];
 }
 
-const checkDailyLimit = (sum) => {
-    if (sum > limits.daily) {
-        return true
-    }
+export const reloadDateSumColor = (dateSum) => {
+    if (dateSum.textContent > limits.daily) dateSum.classList.add("day__sum--red");
 }
 
 const reloadDateItemsHtml = (date) => {
@@ -71,7 +69,7 @@ const reloadDateItemsHtml = (date) => {
     }
     let currentDateSum = currentDate.querySelector(".day__sum");
     currentDateSum.textContent = dateSum;
-    if (checkDailyLimit(dateSum)) currentDateSum.classList.add("day__sum--red")
+    reloadDateSumColor(currentDateSum);
 }
 
 const sumOfPrices = (month) => {
