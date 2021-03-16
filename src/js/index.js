@@ -36,7 +36,7 @@ const addNewDateHtml = (date) => {
                             <div class="day__container">
                             <div class="day__header">
                                 <h3 class="day__title">${date}</h3>
-                                <p class="day__sum">0</p>
+                                <p class="day__sum day__sum--red">0</p>
                             </div>
                             <ul class="day__items">
                             </ul>
@@ -46,7 +46,11 @@ const addNewDateHtml = (date) => {
 }
 
 export const reloadDateSumColor = (dateSum) => {
-    if (dateSum.textContent > limits.daily) dateSum.classList.add("day__sum--red");
+    if (dateSum.textContent > limits.daily) {
+        dateSum.classList.add("day__sum--red")
+    } else {
+        dateSum.classList.remove("day__sum--red") 
+    }
 }
 
 const reloadDateItemsHtml = (date) => {
