@@ -91,6 +91,22 @@ const reloadSumHtml = (sum) => {
     container.innerHTML = sum;
 }
 
+const dataValidation = (date, category, price) => {
+    if (date == "" || category == "" || price == "") return true;
+}
+
+const openModal = () => {
+    const modal = document.querySelector(".modal");
+    const form = document.querySelector(".form__container");
+    modal.classList.add("modal--active");
+    form.classList.add("form__container--blur")
+    const button = document.querySelector(".modal__button");
+    button.addEventListener("click", () => {
+        modal.classList.remove("modal--active");
+        form.classList.remove("form__container--blur");
+    })
+}
+
 const addItem = (date, category, name, price) => {
     if (!checkDate(date)) addNewDateHtml(date);
     receipts[date].push(new Receipt(date, category, name, price));
@@ -151,10 +167,13 @@ addButton.addEventListener("click", () => {
     const inputs = [...document.querySelectorAll(".form__input--add")];
     const inputsValue = inputs.map(input => input.value);
     const [date, category, name, price] = inputsValue;
-    addItem(date, category, name, price);
-
-    inputs.forEach(input => input.value = "");
-    addSection.classList.remove("add--active");
+    if (dataValidation(date, category, price)) {
+        openModal();
+    } else {
+        addItem(date, category, name, price);
+        inputs.forEach(input => input.value = "");
+        addSection.classList.remove("add--active");
+    }
 })
 
 document.addEventListener("click", (e) => {
