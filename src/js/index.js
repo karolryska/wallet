@@ -211,6 +211,7 @@ settingsButton.addEventListener("click", (e) => {
     document.querySelector(".settings").classList.add("settings--active");
 })
 
-addItem("2021-02-01","Zakupy codzienne", "Biedronka", 154);
+addItem("2021-02-01","Art. spożywcze", "Biedronka", 154);
+addItem("2021-02-01","Kosmetyki", "Drogeria", 29);
 addItem("2021-02-01","Rachunki", "Prąd", 120);
 addItem("2021-02-03","Rozrywka", "Kino", 24);

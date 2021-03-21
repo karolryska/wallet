@@ -1,7 +1,8 @@
 export const categories = {
-    "Zakupy codzienne": "yellow01",
+    "Art. spożywcze": "yellow01",
+    "Kosmetyki": "green02",
+    "Rozrywka": "blue04",
     "Rachunki": "red01",
-    "Rozrywka": "red04",
 }
 
 const selectLists = document.querySelectorAll(".form__list");
@@ -12,9 +13,7 @@ selectLists.forEach(list => {
     }
 })
 
-
 const categoriesLink = document.querySelector(".settings__item--categories");
-
 
 const loadCategoriesList = () => {
     const list = document.querySelector(".categories__list");

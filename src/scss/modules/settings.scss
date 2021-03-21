@@ -9,7 +9,7 @@
     z-index: 100;
     min-height: 100vh;
     width: 100vw;
-    background-color: grey;
+    background-color: $background;
     padding: 40px;
     flex-direction: column;
     font-family: $font-main;
@@ -53,22 +53,28 @@
 
 .category {
     &__content {
-        margin-bottom: 60px;
+        margin-bottom: 36px;
     }
 
     &__description {
-        font-size: 8px;
+        font-size: 12px;
+        margin-bottom: 10px;
     }
 
+    &__name {
+        font-size: 18px;
+    }
 }
 
 
 .category__colors {
-    height: calc((100vw - 80px)/2);
-    width: 100%;
+    height: 80vw;
+    max-height: 400px;
+    width: 80vw;
+    max-width: 400px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     grid-gap: 20px;
 }
 
@@ -98,6 +104,42 @@
     }
 }
 
+.green {
+    &01 {
+        background-color: $green01;
+    }
+
+    &02 {
+        background-color: $green02;
+    }
+
+    &03 {
+        background-color: $green03;
+    }
+
+    &04 {
+        background-color: $green04;
+    }
+}
+
+.blue {
+    &01 {
+        background-color: $blue01;
+    }
+
+    &02 {
+        background-color: $blue02;
+    }
+
+    &03 {
+        background-color: $blue03;
+    }
+
+    &04 {
+        background-color: $blue04;
+    }
+}
+
 .red {
     &01 {
         background-color: $red01;
@@ -123,7 +165,7 @@ input[type="radio"] {
 
     &:checked+label {
         span {
-            border: 2px solid black;
+            border: 8px solid $white;
         }
     }
 
@@ -135,7 +177,6 @@ input[type="radio"] {
 }
 
 .limits {
-
     &__day {
         display: flex;
         flex-direction: row;
