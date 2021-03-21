@@ -35,23 +35,31 @@
       <form action="" class="form__container">
         <p class="form__input-container">
           <label class="form__label" for="date">data</label>
-          <input class="form__input form__input--add" id="date" type="date">
+          <input class="form__input" id="date" type="date">
         </p>
         <p class="form__input-container">
           <label class="form__label" for="categories">kategoria</label>
-          <select class="form__list form__input form__input--add" name="" id=""></select>
+          <select class="form__list form__input" name="" id=""></select>
         </p>
         <p class="form__input-container">
           <label class="form__label" for="name">opis</label>
-          <input class="form__input form__input--add" id="name" type="text">
+          <input class="form__input" id="name" type="text">
         </p>
         <p class="form__input-container">
           <label class="form__label" for="price">cena</label>
-          <input class="form__input form__input--add" id="price" type="number">
+          <input class="form__input" id="price" type="number">
         </p>
-        <div class="form__buttons">
+        <div class="form__buttons-add">
           <button type="button" class="form-button form-button--add">
             <img src="../assets/icons/icon_add.svg" alt="">
+          </button>
+        </div>
+        <div class="form__buttons-edit">
+          <button type="button" class="form-button form-button--delete">
+            <img src="../assets/icons/icon_delete.svg" alt="">
+          </button>
+          <button type="button" class="form-button form-button--save">
+            <img src="../assets/icons/icon_save.svg" alt="">
           </button>
         </div>
       </form>
@@ -61,7 +69,7 @@
         <button class="modal__button">Ok, rozumiem!</button>
       </div>
     </section>
-    <section class="edit form">
+    <!-- <section class="edit form">
       <form action="" class="form__container">
         <p class="form__input-container">
           <label class="form__label" for="date">data</label>
@@ -88,7 +96,7 @@
           </button>
         </div>
       </form>
-    </section>
+    </section> -->
     <section class="content">
       <ul class="content__list">
       </ul>
