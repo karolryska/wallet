@@ -1,18 +1,32 @@
-![cover](https://cotenfrontend.pl/img/cover.png)
+# wallet :money_with_wings:
+Simple expenses tracker.
 
-# WTF Webpack Starter Kit 
+## About
+Web application build with VanillaJS. 
+App is made for count daily expenses. You can add receipts with categories by date. Then you can manage these receipts.
+Settings let you change category labeles, set daily limits and switch to dark mode.
+I'd like to add PWA and storage receipts in local storage.
 
-Simple toolkit for your static websites development.
+## Technologies and tools
+- HTML5
+- CSS3 (SCSS, Flexbox, Grid)
+- JavaScript ES6
+- webpack
+- npm
+- Git
+- Figma
 
-## How to use it?
+## To do
+- dark mode
+- monthly statistics
 
-Click on `Use this template` button to generate a new repository based on this starter kit. After that clone it to your computer, go to the project directory in console and type `npm install`.
+## Setup
+To run this project you need Node.js with npm installed.
+```
+npm install
+npm run start
+```
 
-## Available scripts
-
-`npm run start` - runs development mode
-
-`npm run build` - runs build process for production
-
-`npm run publish` - runs build process and publish the page using `gh-pages` branch
+## Live
+[wallet](https://karolryska.github.io/wallet/)
 
