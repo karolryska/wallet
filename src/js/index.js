@@ -2,17 +2,18 @@ import '../scss/main.scss';
 import {categories} from './categories'
 import {limits} from './limits'
 
-
+const navAddButton = document.querySelector(".navigation__button--add");
+const settingsButton = document.querySelector(".button--settings");
+const form = document.querySelector(".form");
+const formButtonsAdd = document.querySelector(".form__buttons-add");
+const formButtonsEdit = document.querySelector(".form__buttons-edit");
 const addButton = document.querySelector(".form-button--add");
 const deleteButton = document.querySelector(".form-button--delete");
 const saveButton = document.querySelector(".form-button--save");
-const navAddButton = document.querySelector(".navigation__button--add");
-const addSection = document.querySelector(".add");
-const editSection = document.querySelector(".edit");
-const settingsButton = document.querySelector(".button--settings");
 
 navAddButton.addEventListener("click", () => {
-    addSection.classList.add("add--active");
+    form.classList.add("form--add");
+    formButtonsAdd.classList.add("form__buttons-add--active");
 })
 
 export let receipts = {};
@@ -115,6 +116,11 @@ const addItem = (date, category, name, price) => {
     reloadSumHtml(sum);
 }
 
+const clearInputs = () => {
+    const inputs = [...document.querySelectorAll(".form__input")];
+    inputs.forEach(input => input.value = "");
+}
+
 let editItemInfo = [];
 
 const identifyItemToEdit = (clickedItem) => {
@@ -128,7 +134,7 @@ const identifyItemToEdit = (clickedItem) => {
 const fillEditForm = (itemToEdit) => {
     let [item, date, index] = itemToEdit;
 
-    const emptyInputs = [...document.querySelectorAll(".form__input--edit")];
+    const emptyInputs = [...document.querySelectorAll(".form__input")];
     let [dateInput, categoryInput, nameInput, priceInput] = emptyInputs;
 
     dateInput.value = item.date;
@@ -157,22 +163,23 @@ const deleteItem = () => {
 const editItem = () => {
     deleteItem();
 
-    const inputs = [...document.querySelectorAll(".form__input--edit")];
+    const inputs = [...document.querySelectorAll(".form__input")];
     const inputsValue = inputs.map(input => input.value);
     let [date, category, name, price] = inputsValue;
     addItem(date, category, name, price);
 }
 
 addButton.addEventListener("click", () => {
-    const inputs = [...document.querySelectorAll(".form__input--add")];
+    const inputs = [...document.querySelectorAll(".form__input")];
     const inputsValue = inputs.map(input => input.value);
     const [date, category, name, price] = inputsValue;
     if (dataValidation(date, category, price)) {
         openModal();
     } else {
         addItem(date, category, name, price);
-        inputs.forEach(input => input.value = "");
-        addSection.classList.remove("add--active");
+        form.classList.remove("form--add");
+        clearInputs();
+        formButtonsAdd.classList.remove("form__buttons-add--active");
     }
 })
 
@@ -180,18 +187,23 @@ document.addEventListener("click", (e) => {
     if (e.target.classList.contains("item__content")) {
         editItemInfo = identifyItemToEdit(e);
         fillEditForm(editItemInfo);
-        editSection.classList.add("edit--active");
+        form.classList.add("form--edit");
+        formButtonsEdit.classList.add("form__buttons-edit--active");
     }
 })
 
 saveButton.addEventListener("click", () => {
     editItem();
-    editSection.classList.remove("edit--active");
+    clearInputs();
+    form.classList.remove("form--edit");
+    formButtonsEdit.classList.remove("form__buttons-edit--active");
 });
 
 deleteButton.addEventListener("click", () => {
     deleteItem();
-    editSection.classList.remove("edit--active");
+    clearInputs();
+    form.classList.remove("form--edit");
+    formButtonsEdit.classList.remove("form__buttons-edit--active");
 });
 
 settingsButton.addEventListener("click", (e) => {

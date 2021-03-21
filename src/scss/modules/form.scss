@@ -1,4 +1,6 @@
 .form {
+
+    display: none;
     height: 100vh;
     width: 100%;
     justify-content: center;
@@ -37,39 +39,37 @@
         letter-spacing: 1px;
     }
 
-    &__buttons {
+    &__buttons-add,
+    &__buttons-edit {
+        display: none;
         margin-top: 14px;
-        display: flex;
         flex-direction: row;
-        justify-content: space-around
+        justify-content: space-around;
+
+        &--active {
+            display: flex;
+        }
     }
 }
 
-.add {
-    display: none;
+.form--add {
     background-color: $text-dark;
-
-    &--active {
-        display: flex;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 20;
-    }
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
 }
 
-.edit {
-    display: none;
+.form--edit {
     background-color: $navigation;
-
-    &--active {
-        display: flex;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 20;
-    }
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
 }
+
 
 .form-button {
     height: 50px;
