@@ -17,6 +17,7 @@ navAddButton.addEventListener("click", () => {
 })
 
 export let receipts = {};
+export let receipts01 = {};
 
 class Receipt {
     constructor(date, category, name, price) {
@@ -29,6 +30,22 @@ class Receipt {
 
 const checkDate = (date) => {
     return receipts[date] ? true : false
+}
+
+const dateObject = (date) => {
+    const [year, month, day] = date.split("-");
+
+    if (!receipts01[year]) {
+        receipts01[year] = {};
+    }
+    if (!receipts01[year][month]) {
+        receipts01[year][month] = {};
+    }
+    if (!receipts01[year][month][day]) {
+        receipts01[year][month][day] = [];
+    }
+    
+    return receipts01[year][month][day]
 }
 
 const addNewDateHtml = (date) => {
@@ -54,27 +71,27 @@ export const reloadDateSumColor = (dateSum) => {
     }
 }
 
-const reloadDateItemsHtml = (date) => {
+const reloadDateItemsHtml = (dateObject, date) => {
     const currentDate = document.getElementById(date);
     const currentDateContainer = currentDate.querySelector(".day__items");
     currentDateContainer.innerHTML = "";
-
-    const currentDateItems = receipts[date];
     
     let dateSum = 0;
     
-    for (let i = 0; i < receipts[date].length; i++) {
-        const itemCategory = currentDateItems[i].category;
+    console.log(dateObject);
+    for (let i = 0; i < dateObject.length; i++) {
+        const itemCategory = dateObject[i].category;
+        console.log(itemCategory);
         currentDateContainer.innerHTML += `<li id="${i}" class="day__item item item--${categories[itemCategory]}">
-                                    <p class="item__content item__content--category">${currentDateItems[i].category}</p>
-                                    <p class="item__content item__content--price">${currentDateItems[i].price}</p>
-                                    <p class="item__content item__content--name">${currentDateItems[i].name}</p>
+                                    <p class="item__content item__content--category">${dateObject[i].category}</p>
+                                    <p class="item__content item__content--price">${dateObject[i].price}</p>
+                                    <p class="item__content item__content--name">${dateObject[i].name}</p>
                                 </li>`;
-        dateSum += Number(currentDateItems[i].price);
+        // dateSum += Number(currentDateItems[i].price);
     }
-    let currentDateSum = currentDate.querySelector(".day__sum");
-    currentDateSum.textContent = dateSum;
-    reloadDateSumColor(currentDateSum);
+    // let currentDateSum = currentDate.querySelector(".day__sum");
+    // currentDateSum.textContent = dateSum;
+    // reloadDateSumColor(currentDateSum);
 }
 
 const sumOfPrices = (month) => {
@@ -109,9 +126,12 @@ const openModal = () => {
 }
 
 const addItem = (date, category, name, price) => {
+    const dateContainer = dateObject(date);
+    dateContainer.push(new Receipt(date, category, name, price));
+    
     if (!checkDate(date)) addNewDateHtml(date);
-    receipts[date].push(new Receipt(date, category, name, price));
-    reloadDateItemsHtml(date, category, name, price);
+    reloadDateItemsHtml(dateContainer, date);
+
     const sum = sumOfPrices(receipts);
     reloadSumHtml(sum);
 }
@@ -126,7 +146,7 @@ let editItemInfo = [];
 const identifyItemToEdit = (clickedItem) => {
     const date = clickedItem.target.parentElement.parentElement.parentElement.parentElement.id;
     const index = clickedItem.target.parentElement.id;
-    const dateItems = receipts[date];
+    const dateItems = dateObject(date);
     const item = dateItems[index];
     return [item, date, index]
 }
@@ -143,19 +163,21 @@ const fillEditForm = (itemToEdit) => {
     priceInput.value = item.price;
 }
 
-const deleteEmptyDates = (date) => {
-    if (!receipts[date].length) {
-        delete receipts[date];
+const deleteEmptyDates = (dateContainer, date) => {
+    const [year, month, day] = date.split("-");
+    if (!dateContainer.length) {
+        delete receipts01[year][month][day];
         document.getElementById(date).remove();
     } else {
-        reloadDateItemsHtml(date);
+        console.log(dateContainer)
+        reloadDateItemsHtml(dateContainer, date);
     }
 }
 
 const deleteItem = () => {
     const [deleteItem, deleteItemDate, deleteItemIndex] = editItemInfo;
-    receipts[deleteItemDate].splice(deleteItemIndex, 1);
-    deleteEmptyDates(deleteItemDate);
+    dateObject(deleteItemDate).splice(deleteItemIndex, 1);
+    deleteEmptyDates(dateObject(deleteItemDate), deleteItemDate);
     const sum = sumOfPrices(receipts);
     reloadSumHtml(sum);
 }
