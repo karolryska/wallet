@@ -37,7 +37,7 @@ class Day {
         if (!monthWrapper.days[day]) {
             monthWrapper.days[day] = this;
         };
-    }    
+    };    
     render(day) {
         if (this.receipts.length === 1) {
         const wrapper = document.querySelector(".content__list");
@@ -66,6 +66,7 @@ class Receipt {
         this.category = category;
         this.name = name;
         this.price = price;
+        this.id = date + "-" + Math.floor(Math.random() * 10000);
         
         let [year, month, day] = date.split("-");
         monthWrapper.days[day].receipts.push(this);
@@ -74,17 +75,13 @@ class Receipt {
         
         const currentDate = document.getElementById(day);
         const currentDateContainer = currentDate.querySelector(".day__items");
-        currentDateContainer.innerHTML += `<li id="" class="day__item item">
+        currentDateContainer.innerHTML += `<li id="${this.id}" class="day__item item">
             <p class="item__content item__content--category">${this.category}</p>
             <p class="item__content item__content--price">${this.price}</p>
             <p class="item__content item__content--name">${this.name}</p>
             </li>`;
-    }
-}
-
-// console.log(monthWrapper);
-
-
+    };
+};
 
 // const checkDate = (date) => {
 //     return receipts[date] ? true : false
@@ -151,30 +148,24 @@ class Receipt {
 //     container.innerHTML = sum;
 // }
 
-// const dataValidation = (date, category, price) => {
-//     if (date == "" || category == "" || price == "") return true;
-// }
+const dataValidation = (date, category, price) => {
+    if (date == "" || category == "" || price == "") return true;
+}
 
-// const openModal = () => {
-//     const modal = document.querySelector(".modal");
-//     const form = document.querySelector(".form__container");
-//     modal.classList.add("modal--active");
-//     form.classList.add("form__container--blur")
-//     const button = document.querySelector(".modal__button");
-//     button.addEventListener("click", () => {
-//         modal.classList.remove("modal--active");
-//         form.classList.remove("form__container--blur");
-//     })
-// }
+const openModal = () => {
+    const modal = document.querySelector(".modal");
+    const form = document.querySelector(".form__container");
+    modal.classList.add("modal--active");
+    form.classList.add("form__container--blur")
+    const button = document.querySelector(".modal__button");
+    button.addEventListener("click", () => {
+        modal.classList.remove("modal--active");
+        form.classList.remove("form__container--blur");
+    })
+}
 
 const addItem = (date, category, name, price) => {
     new Receipt(date, category, name, price);
-
-    // if (!checkDate(date)) addNewDateHtml(date);
-    // receipts[date].push(new Receipt(date, category, name, price));
-    // reloadDateItemsHtml(date, category, name, price);
-    // const sum = sumOfPrices(receipts);
-    // reloadSumHtml(sum);
 }
 
 // const clearInputs = () => {
@@ -230,19 +221,19 @@ const addItem = (date, category, name, price) => {
 //     addItem(date, category, name, price);
 // }
 
-// addButton.addEventListener("click", () => {
-//     const inputs = [...document.querySelectorAll(".form__input")];
-//     const inputsValue = inputs.map(input => input.value);
-//     const [date, category, name, price] = inputsValue;
-//     if (dataValidation(date, category, price)) {
-//         openModal();
-//     } else {
-//         addItem(date, category, name, price);
-//         form.classList.remove("form--add");
-//         clearInputs();
-//         formButtonsAdd.classList.remove("form__buttons-add--active");
-//     }
-// })
+addButton.addEventListener("click", () => {
+    const inputs = [...document.querySelectorAll(".form__input")];
+    const inputsValue = inputs.map(input => input.value);
+    const [date, category, name, price] = inputsValue;
+    if (dataValidation(date, category, price)) {
+        openModal();
+    } else {
+        addItem(date, category, name, price);
+        form.classList.remove("form--add");
+        clearInputs();
+        formButtonsAdd.classList.remove("form__buttons-add--active");
+    };
+});
 
 // document.addEventListener("click", (e) => {
 //     if (e.target.classList.contains("item__content")) {
