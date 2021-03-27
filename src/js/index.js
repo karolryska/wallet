@@ -37,7 +37,8 @@ class Day {
         if (!monthWrapper.days[day]) {
             monthWrapper.days[day] = this;
         };
-    };    
+    };  
+
     render(day) {
         if (this.receipts.length === 1) {
         const wrapper = document.querySelector(".content__list");
@@ -150,7 +151,7 @@ class Receipt {
 
 const dataValidation = (date, category, price) => {
     if (date == "" || category == "" || price == "") return true;
-}
+};
 
 const openModal = () => {
     const modal = document.querySelector(".modal");
@@ -162,38 +163,35 @@ const openModal = () => {
         modal.classList.remove("modal--active");
         form.classList.remove("form__container--blur");
     })
-}
+};
 
 const addItem = (date, category, name, price) => {
     new Receipt(date, category, name, price);
-}
+};
 
 // const clearInputs = () => {
 //     const inputs = [...document.querySelectorAll(".form__input")];
 //     inputs.forEach(input => input.value = "");
 // }
 
-// let editItemInfo = [];
+let editItem;
 
-// const identifyItemToEdit = (clickedItem) => {
-//     const date = clickedItem.target.parentElement.parentElement.parentElement.parentElement.id;
-//     const index = clickedItem.target.parentElement.id;
-//     const dateItems = receipts[date];
-//     const item = dateItems[index];
-//     return [item, date, index]
-// }
+const identifyItemToEdit = (clickedItem) => {
+    const itemId = clickedItem.target.parentElement.id;
+    let [year, month, day, id] = itemId.split("-");
+    const currentDayReceipts = monthWrapper.days[day].receipts;    
+    return currentDayReceipts.find(receipt => receipt.id === itemId)
+}
 
-// const fillEditForm = (itemToEdit) => {
-//     let [item, date, index] = itemToEdit;
+const fillEditForm = (receipt) => {
+    const emptyInputs = [...document.querySelectorAll(".form__input")];
+    let [dateInput, categoryInput, nameInput, priceInput] = emptyInputs;
 
-//     const emptyInputs = [...document.querySelectorAll(".form__input")];
-//     let [dateInput, categoryInput, nameInput, priceInput] = emptyInputs;
-
-//     dateInput.value = item.date;
-//     categoryInput.value = item.category;
-//     nameInput.value = item.name;
-//     priceInput.value = item.price;
-// }
+    dateInput.value = receipt.date;
+    categoryInput.value = receipt.category;
+    nameInput.value = receipt.name;
+    priceInput.value = receipt.price;
+}
 
 // const deleteEmptyDates = (date) => {
 //     if (!receipts[date].length) {
@@ -235,14 +233,14 @@ addButton.addEventListener("click", () => {
     };
 });
 
-// document.addEventListener("click", (e) => {
-//     if (e.target.classList.contains("item__content")) {
-//         editItemInfo = identifyItemToEdit(e);
-//         fillEditForm(editItemInfo);
-//         form.classList.add("form--edit");
-//         formButtonsEdit.classList.add("form__buttons-edit--active");
-//     }
-// })
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("item__content")) {
+        editItem = identifyItemToEdit(e);
+        fillEditForm(editItem);
+        form.classList.add("form--edit");
+        formButtonsEdit.classList.add("form__buttons-edit--active");
+    }
+})
 
 // saveButton.addEventListener("click", () => {
 //     editItem();
