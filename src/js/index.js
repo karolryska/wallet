@@ -16,8 +16,6 @@ navAddButton.addEventListener("click", () => {
     formButtonsAdd.classList.add("form__buttons-add--active");
 });
 
-export let receipts = {};
-
 class Month {
     constructor(month) {
         this.month = month;
@@ -34,19 +32,17 @@ class Day {
         this.sum = 0;
         this.receipts = [];
 
-        if (!monthWrapper.days[day]) {
-            monthWrapper.days[day] = this;
-        };
+        if (!monthWrapper.days[day]) monthWrapper.days[day] = this;
     };  
 
-    render(day) {
-        if (this.receipts.length === 1) {
+    renderDay() {
         const wrapper = document.querySelector(".content__list");
-        wrapper.innerHTML += `<li id="${day}" class="day">
+        if (this.receipts.length === 1) {
+            wrapper.innerHTML += `<li id="${this.day}" class="day">
                             <div class="day__container">
                             <div class="day__header">
-                                <h3 class="day__title">${day}</h3>
-                                <p class="day__sum day__sum--red">${this.sum}</p>
+                                <h3 class="day__title">${this.day}</h3>
+                                <p class="day__sum">${this.sum}</p>
                             </div>
                             <ul class="day__items">
                             </ul>
@@ -54,11 +50,33 @@ class Day {
                         </li>`;
         };
     };
+
+    reloadSum() {
+        const daySumWrapper = document.getElementById(this.day).querySelector(".day__sum");
+        daySumWrapper.innerHTML = this.sum;
+        this.sum > limits.daily ? daySumWrapper.classList.add("day__sum--red") : daySumWrapper.classList.remove("day__sum--red");
+    }
+
+    clearDay() {
+        if (!this.receipts.length) document.getElementById(this.day).remove();
+    };
+
+    renderReceipts() {
+        const currentDateContainer = document.getElementById(this.day).querySelector(".day__items");
+        currentDateContainer.innerHTML = "";
+        this.receipts.forEach(receipt => {
+            currentDateContainer.innerHTML += `<li id="${receipt.id}" class="day__item item">
+            <p class="item__content item__content--category">${receipt.category}</p>
+            <p class="item__content item__content--price">${receipt.price}</p>
+            <p class="item__content item__content--name">${receipt.name}</p>
+            </li>`;
+        });
+    };
 };
 
 for (let i = 1; i < 31; i++) {
-    if (i < 10) new Day("0"+i, "01")
-    else new Day(i.toString(), "01")
+    if (i < 10) new Day("0"+i, "01");
+    else new Day(i.toString(), "01");
 }
 
 class Receipt {
@@ -70,84 +88,26 @@ class Receipt {
         this.id = date + "-" + Math.floor(Math.random() * 10000);
         
         let [year, month, day] = date.split("-");
-        monthWrapper.days[day].receipts.push(this);
-        monthWrapper.days[day].sum += price;
-        monthWrapper.days[day].render(day);
-        
-        const currentDate = document.getElementById(day);
-        const currentDateContainer = currentDate.querySelector(".day__items");
-        currentDateContainer.innerHTML += `<li id="${this.id}" class="day__item item">
-            <p class="item__content item__content--category">${this.category}</p>
-            <p class="item__content item__content--price">${this.price}</p>
-            <p class="item__content item__content--name">${this.name}</p>
-            </li>`;
+        this.dayObject = monthWrapper.days[day];
+
+        this.dayObject.receipts.push(this);
+        this.dayObject.sum += Number(this.price);
+        this.dayObject.renderDay();
+        this.dayObject.reloadSum();
+        this.dayObject.renderReceipts();
+    };
+
+    remove() {
+        const receiptsArray = this.dayObject.receipts;
+        const index = receiptsArray.findIndex(item => item === this);
+        receiptsArray.splice(index, 1);
+
+        this.dayObject.sum -= this.price;
+        this.dayObject.renderReceipts();
+        this.dayObject.reloadSum();
+        this.dayObject.clearDay();
     };
 };
-
-// const checkDate = (date) => {
-//     return receipts[date] ? true : false
-// }
-
-// const addNewDateHtml = (date) => {
-//     const month = document.querySelector(".content__list");
-//     month.innerHTML += `<li id="${date}" class="day">
-//                             <div class="day__container">
-//                             <div class="day__header">
-//                                 <h3 class="day__title">${date}</h3>
-//                                 <p class="day__sum day__sum--red">0</p>
-//                             </div>
-//                             <ul class="day__items">
-//                             </ul>
-//                             </div>
-//                         </li>`;
-//     receipts[date] = [];
-// }
-
-// export const reloadDateSumColor = (dateSum) => {
-//     if (dateSum.textContent > limits.daily) {
-//         dateSum.classList.add("day__sum--red")
-//     } else {
-//         dateSum.classList.remove("day__sum--red") 
-//     }
-// }
-
-// const reloadDateItemsHtml = (date) => {
-//     const currentDate = document.getElementById(date);
-//     const currentDateContainer = currentDate.querySelector(".day__items");
-//     currentDateContainer.innerHTML = "";
-
-//     const currentDateItems = receipts[date];
-    
-//     let dateSum = 0;
-    
-//     for (let i = 0; i < receipts[date].length; i++) {
-//         const itemCategory = currentDateItems[i].category;
-//         currentDateContainer.innerHTML += `<li id="${i}" class="day__item item item--${categories[itemCategory]}">
-//                                     <p class="item__content item__content--category">${currentDateItems[i].category}</p>
-//                                     <p class="item__content item__content--price">${currentDateItems[i].price}</p>
-//                                     <p class="item__content item__content--name">${currentDateItems[i].name}</p>
-//                                 </li>`;
-//         dateSum += Number(currentDateItems[i].price);
-//     }
-//     let currentDateSum = currentDate.querySelector(".day__sum");
-//     currentDateSum.textContent = dateSum;
-//     reloadDateSumColor(currentDateSum);
-// }
-
-// const sumOfPrices = (month) => {
-//     let sum = 0;
-//     for (const date in month) {
-//         month[date].forEach(item => {
-//             sum += Number(item.price);
-//         });
-//     }
-//     return sum
-// }
-
-// const reloadSumHtml = (sum) => {
-//     const container = document.querySelector(".info__sum");
-//     container.innerHTML = sum;
-// }
 
 const dataValidation = (date, category, price) => {
     if (date == "" || category == "" || price == "") return true;
@@ -169,10 +129,10 @@ const addItem = (date, category, name, price) => {
     new Receipt(date, category, name, price);
 };
 
-// const clearInputs = () => {
-//     const inputs = [...document.querySelectorAll(".form__input")];
-//     inputs.forEach(input => input.value = "");
-// }
+const clearInputs = () => {
+    const inputs = [...document.querySelectorAll(".form__input")];
+    inputs.forEach(input => input.value = "");
+};
 
 let editItem;
 
@@ -181,7 +141,7 @@ const identifyItemToEdit = (clickedItem) => {
     let [year, month, day, id] = itemId.split("-");
     const currentDayReceipts = monthWrapper.days[day].receipts;    
     return currentDayReceipts.find(receipt => receipt.id === itemId)
-}
+};
 
 const fillEditForm = (receipt) => {
     const emptyInputs = [...document.querySelectorAll(".form__input")];
@@ -191,33 +151,24 @@ const fillEditForm = (receipt) => {
     categoryInput.value = receipt.category;
     nameInput.value = receipt.name;
     priceInput.value = receipt.price;
-}
+};
 
-// const deleteEmptyDates = (date) => {
-//     if (!receipts[date].length) {
-//         delete receipts[date];
-//         document.getElementById(date).remove();
-//     } else {
-//         reloadDateItemsHtml(date);
-//     }
-// }
+const deleteItem = () => {
+    editItem.remove();
+};
 
-// const deleteItem = () => {
-//     const [deleteItem, deleteItemDate, deleteItemIndex] = editItemInfo;
-//     receipts[deleteItemDate].splice(deleteItemIndex, 1);
-//     deleteEmptyDates(deleteItemDate);
-//     const sum = sumOfPrices(receipts);
-//     reloadSumHtml(sum);
-// }
-
-// const editItem = () => {
-//     deleteItem();
-
-//     const inputs = [...document.querySelectorAll(".form__input")];
-//     const inputsValue = inputs.map(input => input.value);
-//     let [date, category, name, price] = inputsValue;
-//     addItem(date, category, name, price);
-// }
+const editIt = () => {
+    const inputs = [...document.querySelectorAll(".form__input")];
+    const inputsValue = inputs.map(input => input.value);
+    let [date, category, name, price] = inputsValue;
+    if (editItem.date === date) {
+        editItem.edit(date, category, name, price);
+    } else {
+        editItem.remove();
+        addItem(date, category, name, price);
+    };
+    
+};
 
 addButton.addEventListener("click", () => {
     const inputs = [...document.querySelectorAll(".form__input")];
@@ -239,27 +190,27 @@ document.addEventListener("click", (e) => {
         fillEditForm(editItem);
         form.classList.add("form--edit");
         formButtonsEdit.classList.add("form__buttons-edit--active");
-    }
+    };
+});
+
+saveButton.addEventListener("click", () => {
+    editIt();
+    clearInputs();
+    form.classList.remove("form--edit");
+    formButtonsEdit.classList.remove("form__buttons-edit--active");
+});
+
+deleteButton.addEventListener("click", () => {
+    deleteItem();
+    clearInputs();
+    form.classList.remove("form--edit");
+    formButtonsEdit.classList.remove("form__buttons-edit--active");
+});
+
+settingsButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelector(".settings").classList.add("settings--active");
 })
-
-// saveButton.addEventListener("click", () => {
-//     editItem();
-//     clearInputs();
-//     form.classList.remove("form--edit");
-//     formButtonsEdit.classList.remove("form__buttons-edit--active");
-// });
-
-// deleteButton.addEventListener("click", () => {
-//     deleteItem();
-//     clearInputs();
-//     form.classList.remove("form--edit");
-//     formButtonsEdit.classList.remove("form__buttons-edit--active");
-// });
-
-// settingsButton.addEventListener("click", (e) => {
-//     e.preventDefault();
-//     document.querySelector(".settings").classList.add("settings--active");
-// })
 
 addItem("2021-02-01","Art. spożywcze", "Biedronka", 154);
 addItem("2021-02-01","Kosmetyki", "Drogeria", 29);
