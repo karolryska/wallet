@@ -84,7 +84,7 @@ class Receipt {
     render() {
         this.day.renderDay();
         const dayWrapper = document.getElementById(this.day.day).querySelector(".day__items");
-        dayWrapper.insertAdjacentHTML("beforeend",`<li id="${this.id}" class="day__item item">
+        dayWrapper.insertAdjacentHTML("beforeend",`<li id="${this.id}" class="day__item item item--${categories[this.category]}">
         <p class="item__content item__content--category">${this.category}</p>
         <p class="item__content item__content--price">${this.price}</p>
         <p class="item__content item__content--name">${this.name}</p>
