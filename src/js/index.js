@@ -1,6 +1,7 @@
 import '../scss/main.scss';
 import {categories} from './categories'
 import {limits} from './limits'
+import'./header'
 
 const navAddButton = document.querySelector(".navigation__button--add");
 const settingsButton = document.querySelector(".button--settings");
@@ -31,14 +32,13 @@ class Day {
         this.day = day;
         this.sum = 0;
         this.receipts = [];
-
         if (!monthWrapper.days[day]) monthWrapper.days[day] = this;
     };  
 
     renderDay() {
         const wrapper = document.querySelector(".content__list");
         if (this.receipts.length === 1) {
-            wrapper.innerHTML += `<li id="${this.day}" class="day">
+            wrapper.insertAdjacentHTML("beforeend",`<li id="${this.day}" class="day">
                             <div class="day__container">
                             <div class="day__header">
                                 <h3 class="day__title">${this.day}</h3>
@@ -47,30 +47,18 @@ class Day {
                             <ul class="day__items">
                             </ul>
                             </div>
-                        </li>`;
+                        </li>`);
         };
     };
 
-    reloadSum() {
+    reloadDaySum() {
         const daySumWrapper = document.getElementById(this.day).querySelector(".day__sum");
-        daySumWrapper.innerHTML = this.sum;
+        daySumWrapper.textContent = this.sum;
         this.sum > limits.daily ? daySumWrapper.classList.add("day__sum--red") : daySumWrapper.classList.remove("day__sum--red");
-    }
+    };
 
     clearDay() {
         if (!this.receipts.length) document.getElementById(this.day).remove();
-    };
-
-    renderReceipts() {
-        const currentDateContainer = document.getElementById(this.day).querySelector(".day__items");
-        currentDateContainer.innerHTML = "";
-        this.receipts.forEach(receipt => {
-            currentDateContainer.innerHTML += `<li id="${receipt.id}" class="day__item item">
-            <p class="item__content item__content--category">${receipt.category}</p>
-            <p class="item__content item__content--price">${receipt.price}</p>
-            <p class="item__content item__content--name">${receipt.name}</p>
-            </li>`;
-        });
     };
 };
 
@@ -88,24 +76,33 @@ class Receipt {
         this.id = date + "-" + Math.floor(Math.random() * 10000);
         
         let [year, month, day] = date.split("-");
-        this.dayObject = monthWrapper.days[day];
+        this.day = monthWrapper.days[day];
+        this.day.receipts.push(this);
+        this.day.sum += Number(this.price);
+    };
 
-        this.dayObject.receipts.push(this);
-        this.dayObject.sum += Number(this.price);
-        this.dayObject.renderDay();
-        this.dayObject.reloadSum();
-        this.dayObject.renderReceipts();
+    render() {
+        this.day.renderDay();
+        const dayWrapper = document.getElementById(this.day.day).querySelector(".day__items");
+        dayWrapper.insertAdjacentHTML("beforeend",`<li id="${this.id}" class="day__item item">
+        <p class="item__content item__content--category">${this.category}</p>
+        <p class="item__content item__content--price">${this.price}</p>
+        <p class="item__content item__content--name">${this.name}</p>
+        </li>`);
+        this.day.reloadDaySum();
+        // const receiptWrapper = document.getElementById(this.id);
+        // receiptWrapper.addEventListener("click", () => console.log(this))
     };
 
     remove() {
-        const receiptsArray = this.dayObject.receipts;
+        const receiptsArray = this.day.receipts;
         const index = receiptsArray.findIndex(item => item === this);
         receiptsArray.splice(index, 1);
+        document.getElementById(this.id).remove()
 
-        this.dayObject.sum -= this.price;
-        this.dayObject.renderReceipts();
-        this.dayObject.reloadSum();
-        this.dayObject.clearDay();
+        this.day.sum -= this.price;
+        this.day.reloadDaySum();
+        this.day.clearDay();
     };
 };
 
@@ -126,7 +123,8 @@ const openModal = () => {
 };
 
 const addItem = (date, category, name, price) => {
-    new Receipt(date, category, name, price);
+    const receipt = new Receipt(date, category, name, price);
+    receipt.render();
 };
 
 const clearInputs = () => {
@@ -134,7 +132,7 @@ const clearInputs = () => {
     inputs.forEach(input => input.value = "");
 };
 
-let editItem;
+let itemToEdit;
 
 const identifyItemToEdit = (clickedItem) => {
     const itemId = clickedItem.target.parentElement.id;
@@ -154,20 +152,12 @@ const fillEditForm = (receipt) => {
 };
 
 const deleteItem = () => {
-    editItem.remove();
+    itemToEdit.remove();
 };
 
-const editIt = () => {
-    const inputs = [...document.querySelectorAll(".form__input")];
-    const inputsValue = inputs.map(input => input.value);
-    let [date, category, name, price] = inputsValue;
-    if (editItem.date === date) {
-        editItem.edit(date, category, name, price);
-    } else {
-        editItem.remove();
-        addItem(date, category, name, price);
-    };
-    
+const editItem = (date, category, name, price) => {
+    itemToEdit.remove();
+    addItem(date, category, name, price);
 };
 
 addButton.addEventListener("click", () => {
@@ -186,15 +176,25 @@ addButton.addEventListener("click", () => {
 
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("item__content")) {
-        editItem = identifyItemToEdit(e);
-        fillEditForm(editItem);
+        itemToEdit = identifyItemToEdit(e);
+        fillEditForm(itemToEdit);
         form.classList.add("form--edit");
         formButtonsEdit.classList.add("form__buttons-edit--active");
     };
 });
 
 saveButton.addEventListener("click", () => {
-    editIt();
+    const inputs = [...document.querySelectorAll(".form__input")];
+    const inputsValue = inputs.map(input => input.value);
+    const [date, category, name, price] = inputsValue;
+    if (dataValidation(date, category, price)) {
+        openModal();
+    } else {
+        editItem(date, category, name, price);
+        form.classList.remove("form--add");
+        clearInputs();
+        formButtonsAdd.classList.remove("form__buttons-add--active");
+    };
     clearInputs();
     form.classList.remove("form--edit");
     formButtonsEdit.classList.remove("form__buttons-edit--active");
@@ -212,8 +212,8 @@ settingsButton.addEventListener("click", (e) => {
     document.querySelector(".settings").classList.add("settings--active");
 })
 
-addItem("2021-02-01","Art. spożywcze", "Biedronka", 154);
+
 addItem("2021-02-01","Kosmetyki", "Drogeria", 29);
 addItem("2021-02-01","Rachunki", "Prąd", 120);
 addItem("2021-02-10","Rozrywka", "Kino", 24);
-addItem("2021-02-12","Rozrywka", "Kino", 24);
+addItem("2021-02-12","Rozrywka", "Gokarty", 50);
