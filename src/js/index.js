@@ -17,22 +17,44 @@ navAddButton.addEventListener("click", () => {
     formButtonsAdd.classList.add("form__buttons-add--active");
 });
 
+const today = new Date().toISOString().slice(0, 10);
+let [todayYear, todayMonth, todayDay] = today.split("-");
+
+
+class Year {
+    constructor() {
+        this['01'];
+        this['02'];
+        this['03'];
+        this['04'];
+        this['05'];
+        this['06'];
+        this['07'];
+        this['08'];
+        this['09'];
+        this['10'];
+        this['11'];
+        this['12'];
+    };
+};
+
+const year2021 = new Year();
+
 class Month {
     constructor(month) {
         this.month = month;
         this.sum = 0;
-        this.days = {}
+        this.days = {};
+        if (!year2021[month] ) year2021[month] = this;
     };
 };
-
-const monthWrapper = new Month("february");
 
 class Day {
     constructor(day, month) {
         this.day = day;
         this.sum = 0;
         this.receipts = [];
-        if (!monthWrapper.days[day]) monthWrapper.days[day] = this;
+        if (!year2021[month].days[day]) year2021[month].days[day] = this;
     };  
 
     renderDay() {
@@ -62,11 +84,6 @@ class Day {
     };
 };
 
-for (let i = 1; i < 31; i++) {
-    if (i < 10) new Day("0"+i, "01");
-    else new Day(i.toString(), "01");
-}
-
 class Receipt {
     constructor(date, category, name, price) {
         this.date = date;
@@ -76,7 +93,8 @@ class Receipt {
         this.id = date + "-" + Math.floor(Math.random() * 10000);
         
         let [year, month, day] = date.split("-");
-        this.day = monthWrapper.days[day];
+        const monthObject = year2021[month];
+        this.day = monthObject.days[day];
         this.day.receipts.push(this);
         this.day.sum += Number(this.price);
     };
@@ -98,7 +116,7 @@ class Receipt {
         const receiptsArray = this.day.receipts;
         const index = receiptsArray.findIndex(item => item === this);
         receiptsArray.splice(index, 1);
-        document.getElementById(this.id).remove()
+        document.getElementById(this.id).remove();
 
         this.day.sum -= this.price;
         this.day.reloadDaySum();
@@ -114,7 +132,7 @@ const openModal = () => {
     const modal = document.querySelector(".modal");
     const form = document.querySelector(".form__container");
     modal.classList.add("modal--active");
-    form.classList.add("form__container--blur")
+    form.classList.add("form__container--blur");
     const button = document.querySelector(".modal__button");
     button.addEventListener("click", () => {
         modal.classList.remove("modal--active");
@@ -123,8 +141,11 @@ const openModal = () => {
 };
 
 const addItem = (date, category, name, price) => {
+    let [year, month, day] = date.split("-");
+    new Month(month);
+    new Day(day, month);
     const receipt = new Receipt(date, category, name, price);
-    receipt.render();
+    if (month === todayMonth) receipt.render();
 };
 
 const clearInputs = () => {
@@ -137,7 +158,7 @@ let itemToEdit;
 const identifyItemToEdit = (clickedItem) => {
     const itemId = clickedItem.target.parentElement.id;
     let [year, month, day, id] = itemId.split("-");
-    const currentDayReceipts = monthWrapper.days[day].receipts;    
+    const currentDayReceipts = year2021[month].days[day].receipts;    
     return currentDayReceipts.find(receipt => receipt.id === itemId)
 };
 
@@ -217,3 +238,4 @@ addItem("2021-02-01","Kosmetyki", "Drogeria", 29);
 addItem("2021-02-01","Rachunki", "Prąd", 120);
 addItem("2021-02-10","Rozrywka", "Kino", 24);
 addItem("2021-02-12","Rozrywka", "Gokarty", 50);
+addItem("2021-04-12","Rozrywka", "Gokarty", 50);
