@@ -1,14 +1,12 @@
 import '../scss/main.scss';
 import {categories} from './categories'
 import {limits} from './limits'
-import'./header'
 
 const navAddButton = document.querySelector(".navigation__button--add");
 const settingsButton = document.querySelector(".button--settings");
 const form = document.querySelector(".form");
 const formButtonsAdd = document.querySelector(".form__buttons-add");
 const formButtonsEdit = document.querySelector(".form__buttons-edit");
-const addButton = document.querySelector(".form-button--add");
 const deleteButton = document.querySelector(".form-button--delete");
 const saveButton = document.querySelector(".form-button--save");
 
@@ -18,7 +16,8 @@ navAddButton.addEventListener("click", () => {
 });
 
 const today = new Date().toISOString().slice(0, 10);
-let [todayYear, todayMonth, todayDay] = today.split("-");
+export let [todayYear, todayMonth, todayDay] = today.split("-");
+
 
 
 class Year {
@@ -38,15 +37,23 @@ class Year {
     };
 };
 
-const year2021 = new Year();
+export const year2021 = new Year();
 
 class Month {
     constructor(month) {
         this.month = month;
         this.sum = 0;
         this.days = {};
-        if (!year2021[month] ) year2021[month] = this;
+        if (!year2021[month] ) {
+            year2021[month] = this;
+            // inputList.insertAdjacentHTML("afterbegin", `<option value="${month}">${month}</option>`);
+        }
     };
+
+    renderSum() {
+        const sumWrapper = document.querySelector(".info__sum");
+        sumWrapper.textContent = this.sum;
+    }
 };
 
 class Day {
@@ -59,7 +66,8 @@ class Day {
 
     renderDay() {
         const wrapper = document.querySelector(".content__list");
-        if (this.receipts.length === 1) {
+        const dayWrapper = document.getElementById(this.day);
+        if (!dayWrapper) {
             wrapper.insertAdjacentHTML("beforeend",`<li id="${this.day}" class="day">
                             <div class="day__container">
                             <div class="day__header">
@@ -93,14 +101,16 @@ class Receipt {
         this.id = date + "-" + Math.floor(Math.random() * 10000);
         
         let [year, month, day] = date.split("-");
-        const monthObject = year2021[month];
-        this.day = monthObject.days[day];
+        this.month = year2021[month];
+        this.month.sum += Number(this.price);
+        this.day = this.month.days[day];
         this.day.receipts.push(this);
         this.day.sum += Number(this.price);
     };
 
     render() {
         this.day.renderDay();
+        this.month.renderSum();
         const dayWrapper = document.getElementById(this.day.day).querySelector(".day__items");
         dayWrapper.insertAdjacentHTML("beforeend",`<li id="${this.id}" class="day__item item item--${categories[this.category]}">
         <p class="item__content item__content--category">${this.category}</p>
@@ -118,7 +128,8 @@ class Receipt {
         receiptsArray.splice(index, 1);
         document.getElementById(this.id).remove();
 
-        this.day.sum -= this.price;
+        this.day.sum -= Number(this.price);
+        this.month.sum -= Number(this.price);
         this.day.reloadDaySum();
         this.day.clearDay();
     };
@@ -145,6 +156,7 @@ const addItem = (date, category, name, price) => {
     new Month(month);
     new Day(day, month);
     const receipt = new Receipt(date, category, name, price);
+    console.log(year2021[month]);
     if (month === todayMonth) receipt.render();
 };
 
@@ -181,7 +193,7 @@ const editItem = (date, category, name, price) => {
     addItem(date, category, name, price);
 };
 
-addButton.addEventListener("click", () => {
+formButtonsAdd.addEventListener("click", () => {
     const inputs = [...document.querySelectorAll(".form__input")];
     const inputsValue = inputs.map(input => input.value);
     const [date, category, name, price] = inputsValue;
@@ -233,9 +245,9 @@ settingsButton.addEventListener("click", (e) => {
     document.querySelector(".settings").classList.add("settings--active");
 })
 
-
 addItem("2021-02-01","Kosmetyki", "Drogeria", 29);
 addItem("2021-02-01","Rachunki", "Prąd", 120);
+addItem("2021-02-01","Rachunki", "Prąd", 123);
 addItem("2021-02-10","Rozrywka", "Kino", 24);
 addItem("2021-02-12","Rozrywka", "Gokarty", 50);
-addItem("2021-04-12","Rozrywka", "Gokarty", 50);
+addItem("2021-04-12","Rozrywka", "Gokarty", 56);
