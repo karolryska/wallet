@@ -5,8 +5,9 @@ module.exports = {
   /* here you can define another js file */
   entry: {
     index: "./src/js/index.js",
-    categories: "./src/js/categories.js",
-    limits: "./src/js/limits.js",
+    // categories: "./src/js/categories.js",
+    // limits: "./src/js/limits.js",
+    header: "./src/js/header.js",
   },
   output: {
     filename: "[name].[hash:8].js",
