@@ -18,8 +18,6 @@ navAddButton.addEventListener("click", () => {
 const today = new Date().toISOString().slice(0, 10);
 export let [todayYear, todayMonth, todayDay] = today.split("-");
 
-
-
 class Year {
     constructor() {
         this['01'];
@@ -156,7 +154,6 @@ const addItem = (date, category, name, price) => {
     new Month(month);
     new Day(day, month);
     const receipt = new Receipt(date, category, name, price);
-    console.log(year2021[month]);
     if (month === todayMonth) receipt.render();
 };
 
@@ -251,3 +248,46 @@ addItem("2021-02-01","Rachunki", "Prąd", 123);
 addItem("2021-02-10","Rozrywka", "Kino", 24);
 addItem("2021-02-12","Rozrywka", "Gokarty", 50);
 addItem("2021-04-12","Rozrywka", "Gokarty", 56);
+
+/* headers.js */
+
+const currentMonth = document.querySelector(".info__month");
+const previousMonthButton = document.querySelector(".info__button--previous");
+const nextMonthButton = document.querySelector(".info__button--next");
+
+const year = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopda", "grudzień",]
+
+let index = Number(todayMonth) - 1;
+
+const monthsNameReload = () => {
+    currentMonth.textContent = months[index];
+    previousMonthButton.textContent = months[index-1];
+    nextMonthButton.textContent = months[index+1];
+};
+
+monthsNameReload();
+
+const changeMonth = (month) => {
+    const wrapper = document.querySelector(".content__list");
+    wrapper.textContent = "";
+
+    if (!year2021[month]) {
+        wrapper.textContent = ""
+        document.querySelector(".info__sum").textContent = 0;
+    } else for (const property in year2021[month].days) {
+        year2021[month].days[property].receipts.forEach(receipt => receipt.render());
+    };
+}
+
+previousMonthButton.addEventListener("click", () => {
+    index--;
+    monthsNameReload();
+    changeMonth(year[index]);
+})
+
+nextMonthButton.addEventListener("click", () => {
+    index++;
+    monthsNameReload();
+    changeMonth(year[index]);
+})
