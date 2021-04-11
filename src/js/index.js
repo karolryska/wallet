@@ -1,6 +1,6 @@
 import '../scss/main.scss';
-import {categories} from './categories'
-import {limits} from './limits'
+import {categories} from './categories';
+import {limits} from './limits';
 
 const navAddButton = document.querySelector(".navigation__button--add");
 const settingsButton = document.querySelector(".button--settings");
@@ -9,14 +9,6 @@ const formButtonsAdd = document.querySelector(".form__buttons-add");
 const formButtonsEdit = document.querySelector(".form__buttons-edit");
 const deleteButton = document.querySelector(".form-button--delete");
 const saveButton = document.querySelector(".form-button--save");
-
-navAddButton.addEventListener("click", () => {
-    form.classList.add("form--add");
-    formButtonsAdd.classList.add("form__buttons-add--active");
-});
-
-const today = new Date().toISOString().slice(0, 10);
-export let [todayYear, todayMonth, todayDay] = today.split("-");
 
 class Year {
     constructor() {
@@ -45,13 +37,13 @@ class Month {
         if (!year2021[month] ) {
             year2021[month] = this;
             // inputList.insertAdjacentHTML("afterbegin", `<option value="${month}">${month}</option>`);
-        }
+        };
     };
 
     renderSum() {
         const sumWrapper = document.querySelector(".info__sum");
         sumWrapper.textContent = this.sum;
-    }
+    };
 };
 
 class Day {
@@ -133,6 +125,10 @@ class Receipt {
     };
 };
 
+const today = new Date().toISOString().slice(0, 10);
+export let [todayYear, todayMonth, todayDay] = today.split("-");
+let setMonth = todayMonth;
+
 const dataValidation = (date, category, price) => {
     if (date == "" || category == "" || price == "") return true;
 };
@@ -146,7 +142,7 @@ const openModal = () => {
     button.addEventListener("click", () => {
         modal.classList.remove("modal--active");
         form.classList.remove("form__container--blur");
-    })
+    });
 };
 
 const addItem = (date, category, name, price) => {
@@ -154,7 +150,7 @@ const addItem = (date, category, name, price) => {
     new Month(month);
     new Day(day, month);
     const receipt = new Receipt(date, category, name, price);
-    if (month === todayMonth) receipt.render();
+    if (month === setMonth) receipt.render();
 };
 
 const clearInputs = () => {
@@ -189,6 +185,11 @@ const editItem = (date, category, name, price) => {
     itemToEdit.remove();
     addItem(date, category, name, price);
 };
+
+navAddButton.addEventListener("click", () => {
+    form.classList.add("form--add");
+    formButtonsAdd.classList.add("form__buttons-add--active");
+});
 
 formButtonsAdd.addEventListener("click", () => {
     const inputs = [...document.querySelectorAll(".form__input")];
@@ -240,14 +241,16 @@ deleteButton.addEventListener("click", () => {
 settingsButton.addEventListener("click", (e) => {
     e.preventDefault();
     document.querySelector(".settings").classList.add("settings--active");
-})
+});
 
 addItem("2021-02-01","Kosmetyki", "Drogeria", 29);
-addItem("2021-02-01","Rachunki", "Prąd", 120);
 addItem("2021-02-01","Rachunki", "Prąd", 123);
 addItem("2021-02-10","Rozrywka", "Kino", 24);
+addItem("2021-03-22","Art. spożywcze", "Biedronka", 134);
 addItem("2021-02-12","Rozrywka", "Gokarty", 50);
-addItem("2021-04-12","Rozrywka", "Gokarty", 56);
+addItem("2021-04-02","Rozrywka", "Kręgle", 120);
+addItem("2021-04-05","Art. spożywcze", "Lidl", 98);
+
 
 /* headers.js */
 
@@ -256,14 +259,15 @@ const previousMonthButton = document.querySelector(".info__button--previous");
 const nextMonthButton = document.querySelector(".info__button--next");
 
 const year = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopda", "grudzień",]
+const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopda", "grudzień"];
 
-let index = Number(todayMonth) - 1;
+let index = Number(setMonth) - 1;
 
 const monthsNameReload = () => {
     currentMonth.textContent = months[index];
     previousMonthButton.textContent = months[index-1];
     nextMonthButton.textContent = months[index+1];
+    setMonth = year[index];
 };
 
 monthsNameReload();
@@ -273,21 +277,21 @@ const changeMonth = (month) => {
     wrapper.textContent = "";
 
     if (!year2021[month]) {
-        wrapper.textContent = ""
+        wrapper.textContent = "";
         document.querySelector(".info__sum").textContent = 0;
     } else for (const property in year2021[month].days) {
         year2021[month].days[property].receipts.forEach(receipt => receipt.render());
     };
-}
+};
 
 previousMonthButton.addEventListener("click", () => {
     index--;
     monthsNameReload();
     changeMonth(year[index]);
-})
+});
 
 nextMonthButton.addEventListener("click", () => {
     index++;
     monthsNameReload();
     changeMonth(year[index]);
-})
+});
