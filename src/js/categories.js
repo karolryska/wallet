@@ -1,3 +1,6 @@
+const selectLists = document.querySelector(".form__list");
+
+
 export const categories = {
     "Art. spożywcze": "yellow01",
     "Kosmetyki": "green02",
@@ -5,13 +8,43 @@ export const categories = {
     "Rachunki": "red01",
 }
 
-const selectLists = document.querySelectorAll(".form__list");
+export const categoriesArray = [];
 
-selectLists.forEach(list => {
-    for (let key in categories) {
-        list.innerHTML += `<option value="${key}">${key}</option>`;
+class Category {
+    constructor(name, color) {
+        this.name = name;
+        this.color = color;
+        this.setMonthSum = 0;
+        categoriesArray.push(this);
+        selectLists.innerHTML += `<option value="${this.name}">${this.name}</option>`;
+        
     }
-})
+    monthSum(receipt) {
+        if (this.name === receipt.category) this.setMonthSum += Number(receipt.price);
+    }
+    renderSetMonthSum() {
+        const categoriesListStats = document.querySelector(".stats__categories");
+        categoriesListStats.innerHTML += `<li class="stats__category"><p class="stats__category-name">${this.name}</p><p class="stats__category-sum">${this.setMonthSum}</p></li>`;
+    }
+}
+
+new Category("Art. spożywcze", "yellow01");
+new Category("Jedzenie", "red01");
+new Category("Kosmetyki", "green01");
+new Category("Rachunki", "red04");
+new Category("Rozrywka", "blue04");
+new Category("Inne", "green04");
+
+console.log()
+
+
+// const selectLists = document.querySelectorAll(".form__list");
+
+// selectLists.forEach(list => {
+//     for (let key in categories) {
+//         list.innerHTML += `<option value="${key}">${key}</option>`;
+//     }
+// })
 
 const categoriesLink = document.querySelector(".settings__item--categories");
 

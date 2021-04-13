@@ -1,9 +1,10 @@
 import '../scss/main.scss';
-import {categories} from './categories';
+import {categories, categoriesArray} from './categories';
 import {limits} from './limits';
 
 const navAddButton = document.querySelector(".navigation__button--add");
 const settingsButton = document.querySelector(".button--settings");
+const statsButton = document.querySelector(".button--statistics");
 const form = document.querySelector(".form");
 const formButtonsAdd = document.querySelector(".form__buttons-add");
 const formButtonsEdit = document.querySelector(".form__buttons-edit");
@@ -246,11 +247,46 @@ settingsButton.addEventListener("click", (e) => {
 addItem("2021-02-01","Kosmetyki", "Drogeria", 29);
 addItem("2021-02-01","Rachunki", "Prąd", 123);
 addItem("2021-02-10","Rozrywka", "Kino", 24);
+addItem("2021-02-10","Rozrywka", "Kino", 24);
+addItem("2021-02-10","Rozrywka", "Kino", 24);
+addItem("2021-02-10","Rozrywka", "Kino", 24);
+addItem("2021-02-10","Rozrywka", "Kino", 24);
+addItem("2021-02-10","Rozrywka", "Kino", 24);
 addItem("2021-03-22","Art. spożywcze", "Biedronka", 134);
 addItem("2021-02-12","Rozrywka", "Gokarty", 50);
 addItem("2021-04-02","Rozrywka", "Kręgle", 120);
-addItem("2021-04-05","Art. spożywcze", "Lidl", 98);
 
+
+/* stats.js */
+
+const setMonthReceipts = () => {
+    let currentMonthObject = year2021[setMonth];
+    const setMonthReceipts = [];
+    if (currentMonthObject) {
+        for (const day in currentMonthObject.days) {
+        currentMonthObject.days[day].receipts.forEach(receipt => setMonthReceipts.push(receipt));
+    }};
+    return setMonthReceipts
+} 
+
+const reloadStats = () => {
+    categoriesArray.forEach(category => {
+        category.setMonthSum = 0;
+    });
+    setMonthReceipts().forEach(receipt => {
+        categoriesArray.forEach(category => {
+            category.monthSum(receipt);
+        });
+    });
+    document.querySelector(".stats__categories").innerHTML = "";
+    categoriesArray.forEach(category => category.renderSetMonthSum());
+};
+
+
+statsButton.addEventListener("click", () => {
+    document.querySelector(".stats").classList.add("stats--active");
+    reloadStats();
+});
 
 /* headers.js */
 
@@ -277,7 +313,7 @@ const changeMonth = (month) => {
     wrapper.textContent = "";
 
     if (!year2021[month]) {
-        wrapper.textContent = "";
+        wrapper.textContent = "brak danych";
         document.querySelector(".info__sum").textContent = 0;
     } else for (const property in year2021[month].days) {
         year2021[month].days[property].receipts.forEach(receipt => receipt.render());
@@ -288,10 +324,13 @@ previousMonthButton.addEventListener("click", () => {
     index--;
     monthsNameReload();
     changeMonth(year[index]);
+    reloadStats();
 });
 
 nextMonthButton.addEventListener("click", () => {
     index++;
     monthsNameReload();
     changeMonth(year[index]);
+    reloadStats();
 });
+
