@@ -288,6 +288,7 @@ statsButton.addEventListener("click", () => {
     reloadStats();
 });
 
+
 /* headers.js */
 
 const currentMonth = document.querySelector(".info__month");
@@ -299,16 +300,19 @@ const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "l
 
 let index = Number(setMonth) - 1;
 
-const monthsNameReload = () => {
+const reloadMonthsNames = () => {
+    setMonth = year[index];
     currentMonth.textContent = months[index];
     previousMonthButton.textContent = months[index-1];
-    nextMonthButton.textContent = months[index+1];
+    if (Number(setMonth) < Number(todayMonth)) {
+        nextMonthButton.textContent = months[index+1];
+    } else {
+        nextMonthButton.textContent = "";
+    };
     setMonth = year[index];
 };
 
-monthsNameReload();
-
-const changeMonth = (month) => {
+const renderSetMonth = (month) => {
     const wrapper = document.querySelector(".content__list");
     wrapper.textContent = "";
 
@@ -320,17 +324,21 @@ const changeMonth = (month) => {
     };
 };
 
+const changeMonth = () => {
+    reloadMonthsNames();
+    renderSetMonth(year[index]);
+    reloadStats();
+}
+
+reloadMonthsNames();
+
 previousMonthButton.addEventListener("click", () => {
     index--;
-    monthsNameReload();
-    changeMonth(year[index]);
-    reloadStats();
+    changeMonth();
 });
 
 nextMonthButton.addEventListener("click", () => {
     index++;
-    monthsNameReload();
-    changeMonth(year[index]);
-    reloadStats();
+    changeMonth();
 });
 
