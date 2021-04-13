@@ -191,6 +191,7 @@ const editItem = (date, category, name, price) => {
 navAddButton.addEventListener("click", () => {
     form.classList.add("form--add");
     formButtonsAdd.classList.add("form__buttons-add--active");
+    if (document.querySelector(".stats").classList.contains("stats--active")) document.querySelector(".stats").classList.remove("stats--active");
 });
 
 formButtonsAdd.addEventListener("click", () => {
@@ -284,7 +285,7 @@ const reloadStats = () => {
 };
 
 statsButton.addEventListener("click", () => {
-    document.querySelector(".stats").classList.add("stats--active");
+    document.querySelector(".stats").classList.toggle("stats--active");
     reloadStats();
 });
 
