@@ -120,9 +120,10 @@ class Receipt {
         document.getElementById(this.id).remove();
 
         this.day.sum -= Number(this.price);
-        this.month.sum -= Number(this.price);
         this.day.reloadDaySum();
         this.day.clearDay();
+        this.month.sum -= Number(this.price);
+        this.month.renderSum();
     };
 };
 
@@ -267,7 +268,7 @@ const setMonthReceipts = () => {
         currentMonthObject.days[day].receipts.forEach(receipt => setMonthReceipts.push(receipt));
     }};
     return setMonthReceipts
-} 
+}; 
 
 const reloadStats = () => {
     categoriesArray.forEach(category => {
@@ -281,7 +282,6 @@ const reloadStats = () => {
     document.querySelector(".stats__categories").innerHTML = "";
     categoriesArray.forEach(category => category.renderSetMonthSum());
 };
-
 
 statsButton.addEventListener("click", () => {
     document.querySelector(".stats").classList.add("stats--active");
@@ -309,7 +309,7 @@ const reloadMonthsNames = () => {
     } else {
         nextMonthButton.textContent = "";
     };
-    setMonth = year[index];
+    year2021[setMonth].renderSum();
 };
 
 const renderSetMonth = (month) => {
