@@ -1,5 +1,5 @@
 import '../scss/main.scss';
-import {categories, categoriesArray} from './categories';
+import {categories} from './categories';
 import {limits} from './limits';
 
 const navAddButton = document.querySelector(".navigation__button--add");
@@ -86,7 +86,7 @@ class Day {
 class Receipt {
     constructor(date, category, name, price) {
         this.date = date;
-        this.category = category;
+        this.category = categories[category];
         this.name = name;
         this.price = price;
         this.id = date + "-" + Math.floor(Math.random() * 10000);
@@ -103,8 +103,8 @@ class Receipt {
         this.day.renderDay();
         this.month.renderSum();
         const dayWrapper = document.getElementById(this.day.day).querySelector(".day__items");
-        dayWrapper.insertAdjacentHTML("beforeend",`<li id="${this.id}" class="day__item item item--${categories[this.category]}">
-        <p class="item__content item__content--category">${this.category}</p>
+        dayWrapper.insertAdjacentHTML("beforeend",`<li id="${this.id}" class="day__item item item--${this.category.color}">
+        <p class="item__content item__content--category">${this.category.name}</p>
         <p class="item__content item__content--price">${this.price}</p>
         <p class="item__content item__content--name">${this.name}</p>
         </li>`);
@@ -174,7 +174,7 @@ const fillEditForm = (receipt) => {
     let [dateInput, categoryInput, nameInput, priceInput] = emptyInputs;
 
     dateInput.value = receipt.date;
-    categoryInput.value = receipt.category;
+    categoryInput.value = receipt.category.name;
     nameInput.value = receipt.name;
     priceInput.value = receipt.price;
 };
@@ -272,16 +272,18 @@ const setMonthReceipts = () => {
 }; 
 
 const reloadStats = () => {
-    categoriesArray.forEach(category => {
-        category.setMonthSum = 0;
-    });
+    for (const category in categories) {
+        categories[category].setMonthSum = 0;
+    };
     setMonthReceipts().forEach(receipt => {
-        categoriesArray.forEach(category => {
-            category.monthSum(receipt);
-        });
+        for (const category in categories) {
+            categories[category].monthSum(receipt);
+        };
     });
     document.querySelector(".stats__categories").innerHTML = "";
-    categoriesArray.forEach(category => category.renderSetMonthSum());
+    for (const category in categories) {
+        categories[category].renderSetMonthSum();
+    };
 };
 
 statsButton.addEventListener("click", () => {

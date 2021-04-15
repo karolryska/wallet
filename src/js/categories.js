@@ -1,32 +1,23 @@
 const selectLists = document.querySelector(".form__list");
 
-
-export const categories = {
-    "Art. spożywcze": "yellow01",
-    "Kosmetyki": "green02",
-    "Rozrywka": "blue04",
-    "Rachunki": "red01",
-}
-
-export const categoriesArray = [];
+export const categories = {};
 
 class Category {
     constructor(name, color) {
         this.name = name;
         this.color = color;
         this.setMonthSum = 0;
-        categoriesArray.push(this);
+        categories[name] = this;
         selectLists.innerHTML += `<option value="${this.name}">${this.name}</option>`;
-        
-    }
+    };
     monthSum(receipt) {
-        if (this.name === receipt.category) this.setMonthSum += Number(receipt.price);
-    }
+        if (this.name === receipt.category.name) this.setMonthSum += Number(receipt.price);
+    };
     renderSetMonthSum() {
         const categoriesListStats = document.querySelector(".stats__categories");
         categoriesListStats.innerHTML += `<li class="stats__category"><p class="stats__category-name">${this.name}</p><p class="stats__category-sum">${this.setMonthSum}</p></li>`;
-    }
-}
+    };
+};
 
 new Category("Art. spożywcze", "yellow01");
 new Category("Jedzenie", "red01");
@@ -35,25 +26,14 @@ new Category("Rachunki", "red04");
 new Category("Rozrywka", "blue04");
 new Category("Inne", "green04");
 
-console.log()
-
-
-// const selectLists = document.querySelectorAll(".form__list");
-
-// selectLists.forEach(list => {
-//     for (let key in categories) {
-//         list.innerHTML += `<option value="${key}">${key}</option>`;
-//     }
-// })
-
 const categoriesLink = document.querySelector(".settings__item--categories");
 
 const loadCategoriesList = () => {
     const list = document.querySelector(".categories__list");
     list.innerHTML = "";
 
-    for (let key in categories) {
-        list.innerHTML += `<li><p class="categories__item">${key}</p></li>`;
+    for (let category in categories) {
+        list.innerHTML += `<li><p class="categories__item">${category}</p></li>`;
     }
 }
 
@@ -70,7 +50,7 @@ const loadCategoryName = (category) => {
 }
 
 const setCategoryColor = (category) => {
-    const color = categories[category];
+    const color = categories[category].color;
     document.getElementById(color).checked = true;
 }
 
@@ -79,7 +59,7 @@ const disableColorsInUse = () => {
     colorsInputs.forEach((color) => {
         color.disabled = false;
         for (const category in categories) {
-            if (categories[category] === color.id && !color.checked) color.disabled = true;
+            if (categories[category].color === color.id && !color.checked) color.disabled = true;
         }
     })
 }
@@ -118,7 +98,7 @@ backArrowCategories.addEventListener("click", backToSettings);
 const colorsWrapper = document.querySelector(".category");
 
 const changeCategoryColor = (newColor) => {
-    categories[categoryEdit] = newColor;
+    categories[categoryEdit].color = newColor;
 }
 
 const reloadColor = (originalColor, newColor) => {
@@ -131,10 +111,9 @@ const reloadColor = (originalColor, newColor) => {
 
 colorsWrapper.addEventListener("click", (e) => {
     if (e.target.classList.contains("colors__input")) {
-        const originalColor = categories[categoryEdit];
+        const originalColor = categories[categoryEdit].color;
         const newColor = e.target.id;
     changeCategoryColor(newColor);
     reloadColor(originalColor, newColor);
     }
-    
 })
