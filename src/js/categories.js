@@ -1,4 +1,5 @@
 const selectLists = document.querySelector(".form__list");
+const statsBar = document.querySelector(".stats__bar");
 
 export const categories = {};
 
@@ -15,8 +16,14 @@ class Category {
     };
     renderSetMonthSum() {
         const categoriesListStats = document.querySelector(".stats__categories");
-        categoriesListStats.innerHTML += `<li class="stats__category"><p class="stats__category-name">${this.name}</p><p class="stats__category-sum">${this.setMonthSum}</p></li>`;
+        categoriesListStats.innerHTML += `<li class="stats__category stats__category--${this.color}"><p class="stats__category-name">${this.name}</p><p class="stats__category-sum">${this.setMonthSum}</p></li>`;
     };
+    renderStatsBar (monthSum) {
+        const categoryBar = document.createElement("div");
+        categoryBar.classList.add("stats__category-bar", `stats__category-bar--${this.color}`);
+        statsBar.appendChild(categoryBar);
+        categoryBar.style.width = `${this.setMonthSum/monthSum*100}%`;
+    }
 };
 
 new Category("Art. spożywcze", "yellow01");

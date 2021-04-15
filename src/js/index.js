@@ -249,11 +249,11 @@ settingsButton.addEventListener("click", (e) => {
 addItem("2021-02-01","Kosmetyki", "Drogeria", 29);
 addItem("2021-02-01","Rachunki", "Prąd", 123);
 addItem("2021-02-10","Rozrywka", "Kino", 24);
-addItem("2021-02-10","Rozrywka", "Kino", 24);
-addItem("2021-02-10","Rozrywka", "Kino", 24);
-addItem("2021-02-10","Rozrywka", "Kino", 24);
-addItem("2021-02-10","Rozrywka", "Kino", 24);
-addItem("2021-02-10","Rozrywka", "Kino", 24);
+// addItem("2021-02-10","Rozrywka", "Kino", 24);
+// addItem("2021-02-10","Rozrywka", "Kino", 24);
+// addItem("2021-02-10","Rozrywka", "Kino", 24);
+// addItem("2021-02-10","Rozrywka", "Kino", 24);
+// addItem("2021-02-10","Rozrywka", "Kino", 24);
 addItem("2021-03-22","Art. spożywcze", "Biedronka", 134);
 addItem("2021-02-12","Rozrywka", "Gokarty", 50);
 addItem("2021-04-02","Rozrywka", "Kręgle", 120);
@@ -281,8 +281,10 @@ const reloadStats = () => {
         };
     });
     document.querySelector(".stats__categories").innerHTML = "";
+    document.querySelector(".stats__bar").innerHTML = "";
     for (const category in categories) {
         categories[category].renderSetMonthSum();
+        categories[category].renderStatsBar(year2021[setMonth].sum);
     };
 };
 
