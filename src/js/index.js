@@ -127,6 +127,8 @@ class Receipt {
     };
 };
 
+let mainScreen = true;
+
 const today = new Date().toISOString().slice(0, 10);
 export let [todayYear, todayMonth, todayDay] = today.split("-");
 let setMonth = todayMonth;
@@ -189,9 +191,14 @@ const editItem = (date, category, name, price) => {
 };
 
 navAddButton.addEventListener("click", () => {
-    form.classList.add("form--add");
-    formButtonsAdd.classList.add("form__buttons-add--active");
-    if (document.querySelector(".stats").classList.contains("stats--active")) document.querySelector(".stats").classList.remove("stats--active");
+    if (mainScreen) {
+        form.classList.add("form--add");
+        formButtonsAdd.classList.add("form__buttons-add--active");
+    } else {
+        mainScreen = true;
+        document.querySelector(".stats").classList.remove("stats--active");
+        document.querySelector(".settings").classList.remove("settings--active");
+    }
 });
 
 formButtonsAdd.addEventListener("click", () => {
@@ -242,18 +249,15 @@ deleteButton.addEventListener("click", () => {
 });
 
 settingsButton.addEventListener("click", (e) => {
+    mainScreen = false;
     e.preventDefault();
+    document.querySelector(".stats").classList.remove("stats--active");
     document.querySelector(".settings").classList.add("settings--active");
 });
 
 addItem("2021-02-01","Kosmetyki", "Drogeria", 29);
 addItem("2021-02-01","Rachunki", "Prąd", 123);
 addItem("2021-02-10","Rozrywka", "Kino", 24);
-// addItem("2021-02-10","Rozrywka", "Kino", 24);
-// addItem("2021-02-10","Rozrywka", "Kino", 24);
-// addItem("2021-02-10","Rozrywka", "Kino", 24);
-// addItem("2021-02-10","Rozrywka", "Kino", 24);
-// addItem("2021-02-10","Rozrywka", "Kino", 24);
 addItem("2021-03-22","Art. spożywcze", "Biedronka", 134);
 addItem("2021-02-12","Rozrywka", "Gokarty", 50);
 addItem("2021-04-02","Rozrywka", "Kręgle", 120);
@@ -289,6 +293,8 @@ const reloadStats = () => {
 };
 
 statsButton.addEventListener("click", () => {
+    mainScreen = false;
+    document.querySelector(".settings").classList.remove("settings--active");
     document.querySelector(".stats").classList.toggle("stats--active");
     reloadStats();
 });
