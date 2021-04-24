@@ -16,7 +16,7 @@ class Category {
     };
     renderSetMonthSum() {
         const categoriesListStats = document.querySelector(".stats__categories");
-        categoriesListStats.innerHTML += `<li class="stats__category stats__category--${this.color}"><p class="stats__category-name">${this.name}</p><p class="stats__category-sum">${this.setMonthSum}</p></li>`;
+        if (this.setMonthSum) categoriesListStats.innerHTML += `<li class="stats__category stats__category--${this.color}"><p class="stats__category-name">${this.name}</p><p class="stats__category-sum">${this.setMonthSum}</p></li>`;
     };
     renderStatsBar (monthSum) {
         const categoryBar = document.createElement("div");
