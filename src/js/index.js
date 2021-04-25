@@ -10,6 +10,7 @@ const formButtonsAdd = document.querySelector(".form__buttons-add");
 const formButtonsEdit = document.querySelector(".form__buttons-edit");
 const deleteButton = document.querySelector(".form-button--delete");
 const saveButton = document.querySelector(".form-button--save");
+const mainSection = document.querySelector(".content");
 
 class Year {
     constructor() {
@@ -196,6 +197,7 @@ navAddButton.addEventListener("click", () => {
         formButtonsAdd.classList.add("form__buttons-add--active");
     } else {
         mainScreen = true;
+        mainSection.classList.add("content--active");
         document.querySelector(".stats").classList.remove("stats--active");
         document.querySelector(".settings").classList.remove("settings--active");
     }
@@ -251,6 +253,7 @@ deleteButton.addEventListener("click", () => {
 settingsButton.addEventListener("click", (e) => {
     mainScreen = false;
     e.preventDefault();
+    mainSection.classList.remove("content--active");
     document.querySelector(".stats").classList.remove("stats--active");
     document.querySelector(".settings").classList.add("settings--active");
 });
@@ -294,6 +297,7 @@ const reloadStats = () => {
 
 statsButton.addEventListener("click", () => {
     mainScreen = false;
+    mainSection.classList.remove("content--active");
     document.querySelector(".settings").classList.remove("settings--active");
     document.querySelector(".stats").classList.toggle("stats--active");
     reloadStats();

@@ -40,7 +40,7 @@ const loadCategoriesList = () => {
     list.innerHTML = "";
 
     for (let category in categories) {
-        list.innerHTML += `<li><p class="categories__item">${category}</p></li>`;
+        list.innerHTML += `<li class="categories__item"><p class="categories__category">${category}</p></li>`;
     }
 }
 
@@ -52,8 +52,15 @@ categoriesLink.addEventListener("click", () => {
 const categoriesList = document.querySelector(".categories__list");
 
 const loadCategoryName = (category) => {
-    const categoryName = document.querySelector(".category__name");
-    categoryName.innerHTML = category;
+    const categoryName = document.querySelector(".category__title");
+    console.log(categoryName);
+    categoryName.textContent = category;
+}
+
+const setColorsWrapperHeight = () => {
+    const wrapper = document.querySelector(".category__colors");
+    // wrapper.offsetHeight = wrapper.offsetWidth;
+    wrapper.style.height = `${wrapper.offsetWidth}px`;
 }
 
 const setCategoryColor = (category) => {
@@ -74,13 +81,14 @@ const disableColorsInUse = () => {
 let categoryEdit;
 
 categoriesList.addEventListener("click", (e) => {
-    if (e.target.classList.contains("categories__item")) {
+    if (e.target.classList.contains("categories__category")) {
         const category = e.target.innerHTML;
         loadCategoryName(category);
         setCategoryColor(category);
         disableColorsInUse();
         categoryEdit = category;
         document.querySelector(".category").classList.toggle("category--active");
+        setColorsWrapperHeight();
     };
 })
 
@@ -98,7 +106,7 @@ const backToMain = () => {
     document.querySelector(".settings").classList.toggle("settings--active");
 }
 
-backArrowSettings.addEventListener("click", backToMain);
+// backArrowSettings.addEventListener("click", backToMain);
 backArrowCategory.addEventListener("click", backToCategories);
 backArrowCategories.addEventListener("click", backToSettings);
 

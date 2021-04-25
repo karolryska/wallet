@@ -13,28 +13,28 @@
 </head>
 
 <body>
-  <div class="wrapper">
-    <div class="info">
-      <h1 class="info__month"></h1>
-      <div class="info__buttons">
-        <button class="info__button info__button--previous"></button>
-        <button class="info__button info__button--next"></button>
-      </div>
-      <p class="info__sum"></p>
+  <header class="info">
+    <h1 class="info__month"></h1>
+    <div class="info__buttons">
+      <button class="info__button info__button--previous"></button>
+      <button class="info__button info__button--next"></button>
     </div>
-    <nav class="navigation" id="dat">
-      <div class="navigation__wrapper">
-        <a href=""><button class="navigation__additional-button additional-button button--settings button-additional">
-          <img class="button-additional__svg" src="../assets/icons/icon_settings.svg" alt="">
-        </button></a>
-        
-        <button class="navigation__main-button main-button  navigation__button--add button-main"><img
-            class="main-button__svg" src="../assets/icons/icon_add.svg" alt=""></button>
-        <button class="navigation__additional-button additional-button button--statistics button-additional">
-          <img class="button-additional__svg" src="../assets/icons/icon_stats.svg" alt="">
-        </button>
-      </div>
-    </nav>
+    <p class="info__sum"></p>
+  </header>
+  <nav class="navigation">
+    <div class="navigation__wrapper">
+      <a href=""><button class="navigation__additional-button additional-button button--settings button-additional">
+        <img class="button-additional__svg" src="../assets/icons/icon_settings.svg" alt="">
+      </button></a>
+      
+      <button class="navigation__main-button main-button  navigation__button--add button-main"><img
+          class="main-button__svg" src="../assets/icons/icon_add.svg" alt=""></button>
+      <button class="navigation__additional-button additional-button button--statistics button-additional">
+        <img class="button-additional__svg" src="../assets/icons/icon_stats.svg" alt="">
+      </button>
+    </div>
+  </nav>
+  <div class="wrapper">
     <section class="add form">
       <button class="form__arrow"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
       <form action="" class="form__container">
@@ -74,94 +74,116 @@
         <button class="modal__button">Ok, rozumiem!</button>
       </div>
     </section>
-    <section class="content">
+    <section class="content content--active">
       <ul class="content__list">
       </ul>
     </section>
+    
   </div>
   <div class="settings">
-    <div class="settings__header">
-      <button class="settings__arrow"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
       <p class="settings__title">ustawienia</p>
-    </div>
-    <ul class="settings__list">
-      <li class="settings__item settings__item--categories">
-        <p class="settings__name">kategorie</p>
-      </li>
-      <li class="settings__item settings__item--limits">
-        <p class="settings__name">limity</p>
-      </li>
-      <li class="settings__item">
-        <p>dark mode</p>
-        <input type="checkbox" id="switch" />
-      </li>
-    </ul>
+      <ul class="settings__list">
+        <li class="settings__item settings__item--categories">
+          <p class="settings__name">kategorie</p>
+        </li>
+        <li class="settings__item settings__item--limits">
+          <p class="settings__name">limity</p>
+        </li>
+        <!-- <li class="settings__item">
+          <p>dark mode</p>
+          <input type="checkbox" id="switch" />
+        </li> -->
+      </ul>
   </div>
   <div class="categories">
     <div class="categories__header">
-      <button class="categories__arrow"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
-      <p class="categories__title">kategorie</p>
+      <button class="categories__arrow">
+        <img src="../assets/icons/icon_arrow.svg" alt="">
+        <p class="categories__prev-screen">ustawienia</p>
+      </button>
     </div>
-    <ul class="categories__list"></ul>
+    <div class="categories__wrapper">
+      <p class="categories__title">kategorie</p>
+      <ul class="categories__list"></ul>
+    </div>
   </div>
   <div class="category">
     <div class="category__header">
-      <button class="category__arrow"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
-      <p class="category__title">kategoria</p>
+      <button class="category__arrow">
+        <img src="../assets/icons/icon_arrow.svg" alt="">
+        <p class="category__prev-screen">kategorie</p>
+      </button>
+      
     </div>
+    <div class="category__wrapper">
+      <p class="category__title"></p>
+        <div class="category__colors">
+          <input type="radio" name="color" id="yellow01" value="yellow01" class="colors__input"/>
+          <label for="yellow01" class="color-label"><span class="color yellow01"></span></label>
+          <input type="radio" name="color" id="yellow02" value="yellow02" class="colors__input"/>
+          <label for="yellow02" class="color-label"><span class="color yellow02"></span></label>
+          <input type="radio" name="color" id="yellow03" value="yellow03" class="colors__input"/>
+          <label for="yellow03" class="color-label"><span class="color yellow03"></span></label>
+          <input type="radio" name="color" id="yellow04" value="yellow04" class="colors__input"/>
+          <label for="yellow04" class="color-label"><span class="color yellow04"></span></label>
+  
+          <input type="radio" name="color" id="green01" value="green01" class="colors__input"/>
+          <label for="green01" class="color-label"><span class="color green01"></span></label>
+          <input type="radio" name="color" id="green02" value="green02" class="colors__input"/>
+          <label for="green02" class="color-label"><span class="color green02"></span></label>
+          <input type="radio" name="color" id="green03" value="green03" class="colors__input"/>
+          <label for="green03" class="color-label"><span class="color green03"></span></label>
+          <input type="radio" name="color" id="green04" value="green04" class="colors__input"/>
+          <label for="green04" class="color-label"><span class="color green04"></span></label>
+               
+          <input type="radio" name="color" id="blue01" value="blue01" class="colors__input"/>
+          <label for="blue01" class="color-label"><span class="color blue01"></span></label>
+          <input type="radio" name="color" id="blue02" value="blue02" class="colors__input"/>
+          <label for="blue02" class="color-label"><span class="color blue02"></span></label>
+          <input type="radio" name="color" id="blue03" value="blue03" class="colors__input"/>
+          <label for="blue03" class="color-label"><span class="color blue03"></span></label>
+          <input type="radio" name="color" id="blue04" value="blue04" class="colors__input"/>
+          <label for="blue04" class="color-label"><span class="color blue04"></span></label>
+  
+          <input type="radio" name="color" id="red01" value="red01" class="colors__input"/>
+          <label for="red01" class="color-label"><span class="color red01"></span></label>
+          <input type="radio" name="color" id="red02" value="red02" class="colors__input"/>
+          <label for="red02" class="color-label"><span class="color red02"></span></label>
+          <input type="radio" name="color" id="red03" value="red03" class="colors__input"/>
+          <label for="red03" class="color-label"><span class="color red03"></span></label>
+          <input type="radio" name="color" id="red04" value="red04" class="colors__input"/>
+          <label for="red04" class="color-label"><span class="color red04"></span></label>
+        </div>
+    </div>
+<!-- 
     <div class="category__content">
       <p class="category__description">nazwa kategorii</p>
       <p class="category__name">Kategoria</p>
-    </div>
-    <div class="category__content">
-      <p class="category__description">kolor</p>
-      <div class="category__colors">
-        <input type="radio" name="color" id="yellow01" value="yellow01" class="colors__input"/>
-        <label for="yellow01" class="color-label"><span class="color yellow01"></span></label>
-        <input type="radio" name="color" id="yellow02" value="yellow02" class="colors__input"/>
-        <label for="yellow02" class="color-label"><span class="color yellow02"></span></label>
-        <input type="radio" name="color" id="yellow03" value="yellow03" class="colors__input"/>
-        <label for="yellow03" class="color-label"><span class="color yellow03"></span></label>
-        <input type="radio" name="color" id="yellow04" value="yellow04" class="colors__input"/>
-        <label for="yellow04" class="color-label"><span class="color yellow04"></span></label>
-
-        <input type="radio" name="color" id="green01" value="green01" class="colors__input"/>
-        <label for="green01" class="color-label"><span class="color green01"></span></label>
-        <input type="radio" name="color" id="green02" value="green02" class="colors__input"/>
-        <label for="green02" class="color-label"><span class="color green02"></span></label>
-        <input type="radio" name="color" id="green03" value="green03" class="colors__input"/>
-        <label for="green03" class="color-label"><span class="color green03"></span></label>
-        <input type="radio" name="color" id="green04" value="green04" class="colors__input"/>
-        <label for="green04" class="color-label"><span class="color green04"></span></label>
-             
-        <input type="radio" name="color" id="blue01" value="blue01" class="colors__input"/>
-        <label for="blue01" class="color-label"><span class="color blue01"></span></label>
-        <input type="radio" name="color" id="blue02" value="blue02" class="colors__input"/>
-        <label for="blue02" class="color-label"><span class="color blue02"></span></label>
-        <input type="radio" name="color" id="blue03" value="blue03" class="colors__input"/>
-        <label for="blue03" class="color-label"><span class="color blue03"></span></label>
-        <input type="radio" name="color" id="blue04" value="blue04" class="colors__input"/>
-        <label for="blue04" class="color-label"><span class="color blue04"></span></label>
-
-        <input type="radio" name="color" id="red01" value="red01" class="colors__input"/>
-        <label for="red01" class="color-label"><span class="color red01"></span></label>
-        <input type="radio" name="color" id="red02" value="red02" class="colors__input"/>
-        <label for="red02" class="color-label"><span class="color red02"></span></label>
-        <input type="radio" name="color" id="red03" value="red03" class="colors__input"/>
-        <label for="red03" class="color-label"><span class="color red03"></span></label>
-        <input type="radio" name="color" id="red04" value="red04" class="colors__input"/>
-        <label for="red04" class="color-label"><span class="color red04"></span></label>
-      </div>
-    </div>
+    </div> -->
+    
   </div>
   <div class="limits">
     <div class="limits__header">
-      <button class="limits__arrow"><img src="../assets/icons/icon_arrow.svg" alt=""></button>
-      <p class="categories__title">limity</p>
+      <button class="limits__arrow">
+        <img src="../assets/icons/icon_arrow.svg" alt="">
+        <p class="limits__prev-screen">ustawienia</p>
+      </button>
     </div>
-    <p class="limits__day">
-      <label class="limits__label" for="money">dzienny limit wydatków</label>
-      <input class="limits__input" id="money" type="number">
+    <div class="limits__wrapper">
+      <ul class="limits__list">
+        <p class="limits__title">limity</p>
+        <li class="limits__item">
+          <label class="limits__label" for="day-limit">dzienny</label>
+          <input class="limits__input" id="day-limit" type="number">
+        </li>
+        <li class="limits__item">
+          <label class="limits__label" for="month-limit">miesięczny</label>
+          <input class="limits__input" id="month-limit" type="number">
+        </li>
+      </ul>
+    </div>
+    
+      
     </p>
   </div>
   <div class="stats">

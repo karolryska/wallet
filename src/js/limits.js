@@ -1,12 +1,14 @@
 export let limits = {
     daily: 30,
+    month: 1000,
 };
 
 const limitsLink = document.querySelector(".settings__item--limits");
 
 limitsLink.addEventListener("click", () => {
     document.querySelector(".limits").classList.add("limits--active");
-    document.querySelector(".limits__input").value = limits.daily;
+    document.getElementById("day-limit").value = limits.daily;
+    document.getElementById("month-limit").value = limits.month;
 });
 
 const backArrowSettings = document.querySelector(".limits__arrow");
