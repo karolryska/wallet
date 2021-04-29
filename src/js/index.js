@@ -163,6 +163,12 @@ const clearInputs = () => {
     inputs.forEach(input => input.value = "");
 };
 
+const closeForm = (formType) => {
+    clearInputs();
+    formButtonsAdd.classList.remove(`form__buttons-${formType}--active`);
+    form.classList.remove(`form--${formType}`);
+};
+
 let itemToEdit;
 
 const identifyItemToEdit = (clickedItem) => {
@@ -195,12 +201,13 @@ navAddButton.addEventListener("click", () => {
     if (mainScreen) {
         form.classList.add("form--add");
         formButtonsAdd.classList.add("form__buttons-add--active");
+        document.querySelector(".form__arrow").addEventListener("click", () => closeForm("add"));
     } else {
         mainScreen = true;
         mainSection.classList.add("content--active");
         document.querySelector(".stats").classList.remove("stats--active");
         document.querySelector(".settings").classList.remove("settings--active");
-    }
+    };
 });
 
 formButtonsAdd.addEventListener("click", () => {
@@ -211,9 +218,7 @@ formButtonsAdd.addEventListener("click", () => {
         openModal();
     } else {
         addItem(date, category, name, price);
-        form.classList.remove("form--add");
-        clearInputs();
-        formButtonsAdd.classList.remove("form__buttons-add--active");
+        closeForm("add");
     };
 });
 
@@ -223,6 +228,7 @@ document.addEventListener("click", (e) => {
         fillEditForm(itemToEdit);
         form.classList.add("form--edit");
         formButtonsEdit.classList.add("form__buttons-edit--active");
+        document.querySelector(".form__arrow").addEventListener("click", () => closeForm("edit"));
     };
 });
 
@@ -234,13 +240,9 @@ saveButton.addEventListener("click", () => {
         openModal();
     } else {
         editItem(date, category, name, price);
-        form.classList.remove("form--add");
-        clearInputs();
-        formButtonsAdd.classList.remove("form__buttons-add--active");
+        closeForm("edit");
     };
-    clearInputs();
-    form.classList.remove("form--edit");
-    formButtonsEdit.classList.remove("form__buttons-edit--active");
+    
 });
 
 deleteButton.addEventListener("click", () => {
@@ -343,7 +345,7 @@ const changeMonth = () => {
     reloadMonthsNames();
     renderSetMonth(year[index]);
     reloadStats();
-}
+};
 
 reloadMonthsNames();
 
