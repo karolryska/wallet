@@ -12,34 +12,14 @@ const deleteButton = document.querySelector(".form-button--delete");
 const saveButton = document.querySelector(".form-button--save");
 const mainSection = document.querySelector(".content");
 
-class Year {
-    constructor() {
-        this['01'];
-        this['02'];
-        this['03'];
-        this['04'];
-        this['05'];
-        this['06'];
-        this['07'];
-        this['08'];
-        this['09'];
-        this['10'];
-        this['11'];
-        this['12'];
-    };
-};
 
-export const year2021 = new Year();
+const y2021 = [];
 
 class Month {
     constructor(month) {
-        this.month = month;
+        this.month = Number(month);
         this.sum = 0;
         this.days = {};
-        if (!year2021[month] ) {
-            year2021[month] = this;
-            // inputList.insertAdjacentHTML("afterbegin", `<option value="${month}">${month}</option>`);
-        };
     };
 
     renderSum() {
@@ -48,12 +28,21 @@ class Month {
     };
 };
 
+for (let i = 1; i <= 12; i++) {
+    console.log(i);
+    y2021.push(new Month(i));
+};
+
+console.log(y2021);
+
 class Day {
     constructor(day, month) {
         this.day = day;
         this.sum = 0;
         this.receipts = [];
-        if (!year2021[month].days[day]) year2021[month].days[day] = this;
+        if (!y2021[Number(month) - 1].days[day]) y2021[Number(month) - 1].days[day] = this;
+        // console.log(y2021[Number(month) - 1]);
+        // y2021[Number(month) - 1].days[day] = this;
     };  
 
     renderDay() {
@@ -93,7 +82,7 @@ class Receipt {
         this.id = date + "-" + Math.floor(Math.random() * 10000);
         
         let [year, month, day] = date.split("-");
-        this.month = year2021[month];
+        this.month = y2021[Number(month) - 1];
         this.month.sum += Number(this.price);
         this.day = this.month.days[day];
         this.day.receipts.push(this);
@@ -174,7 +163,7 @@ let itemToEdit;
 const identifyItemToEdit = (clickedItem) => {
     const itemId = clickedItem.target.parentElement.id;
     let [year, month, day, id] = itemId.split("-");
-    const currentDayReceipts = year2021[month].days[day].receipts;    
+    const currentDayReceipts = y2021[Number(month) - 1].days[day].receipts;    
     return currentDayReceipts.find(receipt => receipt.id === itemId)
 };
 
@@ -266,12 +255,15 @@ addItem("2021-02-10","Rozrywka", "Kino", 24);
 addItem("2021-03-22","Art. spożywcze", "Biedronka", 134);
 addItem("2021-02-12","Rozrywka", "Gokarty", 50);
 addItem("2021-04-02","Rozrywka", "Kręgle", 120);
+addItem("2021-05-02","Rozrywka", "Kręgle", 120);
+addItem("2021-05-02","Art. spożywcze", "Xyz", 12);
+addItem("2021-05-03","Inne", "Kręgle", 120);
 
 
 /* stats.js */
 
 const setMonthReceipts = () => {
-    let currentMonthObject = year2021[setMonth];
+    let currentMonthObject = y2021[Number(setMonth) - 1];
     const setMonthReceipts = [];
     if (currentMonthObject) {
         for (const day in currentMonthObject.days) {
@@ -293,9 +285,16 @@ const reloadStats = () => {
     document.querySelector(".stats__bar").innerHTML = "";
     for (const category in categories) {
         categories[category].renderSetMonthSum();
-        categories[category].renderStatsBar(year2021[setMonth].sum);
+        categories[category].renderStatsBar(y2021[Number(setMonth) - 1].sum);
     };
 };
+
+const reloadInfo = () => {
+    if (setMonth != currentMonth) {
+        console.log(`current: ${y2021[Number(setMonth) - 1].sum}`);
+        console.log(`previous: ${y2021[Number(setMonth) - 2].sum}`);
+    }
+}
 
 statsButton.addEventListener("click", () => {
     mainScreen = false;
@@ -303,6 +302,7 @@ statsButton.addEventListener("click", () => {
     document.querySelector(".settings").classList.remove("settings--active");
     document.querySelector(".stats").classList.toggle("stats--active");
     reloadStats();
+    reloadInfo();
 });
 
 
@@ -326,25 +326,31 @@ const reloadMonthsNames = () => {
     } else {
         nextMonthButton.textContent = "";
     };
-    year2021[setMonth].renderSum();
+    y2021[Number(setMonth) - 1].renderSum();
 };
 
 const renderSetMonth = (month) => {
     const wrapper = document.querySelector(".content__list");
     wrapper.textContent = "";
 
-    if (!year2021[month]) {
-        wrapper.textContent = "brak danych";
-        document.querySelector(".info__sum").textContent = 0;
-    } else for (const property in year2021[month].days) {
-        year2021[month].days[property].receipts.forEach(receipt => receipt.render());
+    for (const property in y2021[Number(month) - 1].days) {
+        y2021[Number(month) - 1].days[property].receipts.forEach(receipt => receipt.render());
+        // y2021[Number(month) - 1].days[property].receipts.forEach(receipt => console.log(receipt));
     };
+
+    // if (!y2021[Number(month) - 1]) {
+    //     wrapper.textContent = "brak danych";
+    //     document.querySelector(".info__sum").textContent = 0;
+    // } else for (const property in y2021[Number(month) - 1].days) {
+    //     y2021[Number(month) - 1].days[property].receipts.forEach(receipt => receipt.render());
+    // };
 };
 
 const changeMonth = () => {
     reloadMonthsNames();
     renderSetMonth(year[index]);
     reloadStats();
+    reloadInfo();
 };
 
 reloadMonthsNames();
@@ -359,3 +365,4 @@ nextMonthButton.addEventListener("click", () => {
     changeMonth();
 });
 
+console.log(y2021);
