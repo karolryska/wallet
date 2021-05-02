@@ -12,6 +12,8 @@ const deleteButton = document.querySelector(".form-button--delete");
 const saveButton = document.querySelector(".form-button--save");
 const mainSection = document.querySelector(".content");
 
+export const storage = {}
+
 class Year {
     constructor() {
         this['01'];
@@ -32,12 +34,14 @@ class Year {
 export const year2021 = new Year();
 
 class Month {
-    constructor(month) {
+    constructor(month, year) {
         this.month = month;
         this.sum = 0;
         this.days = {};
-        if (!year2021[month] ) {
-            year2021[month] = this;
+        // console.log(typeof month);
+        // storage.year.month = this
+        if (!storage[year][month]) {
+            storage[year][month] = this;
             // inputList.insertAdjacentHTML("afterbegin", `<option value="${month}">${month}</option>`);
         };
     };
@@ -49,11 +53,17 @@ class Month {
 };
 
 class Day {
-    constructor(day, month) {
+    constructor(day, month, year) {
         this.day = day;
         this.sum = 0;
         this.receipts = [];
-        if (!year2021[month].days[day]) year2021[month].days[day] = this;
+        // console.log(storage[year]);
+        // console.log(month);
+        // if (!storage[year][month].days[day]) console.log(month);
+        // console.log(storage[year][month].days[day])
+        if (!storage[year][month].days[day]) storage[year][month].days[day] = this;
+        // console.log(storage[year][month].days[day])
+        
     };  
 
     renderDay() {
@@ -93,7 +103,7 @@ class Receipt {
         this.id = date + "-" + Math.floor(Math.random() * 10000);
         
         let [year, month, day] = date.split("-");
-        this.month = year2021[month];
+        this.month = storage[year][month]
         this.month.sum += Number(this.price);
         this.day = this.month.days[day];
         this.day.receipts.push(this);
@@ -132,7 +142,14 @@ let mainScreen = true;
 
 const today = new Date().toISOString().slice(0, 10);
 export let [todayYear, todayMonth, todayDay] = today.split("-");
-let setMonth = todayMonth;
+
+
+if (!storage[todayYear]) storage[todayYear] = new Year();
+// console.log(storage);
+if (!storage[todayYear][todayMonth]) storage[todayYear][todayMonth] = new Month(todayMonth, todayYear);
+// console.log(storage[todayYear]);
+
+let setMonth = storage[todayYear][todayMonth];
 
 const dataValidation = (date, category, price) => {
     if (date == "" || category == "" || price == "") return true;
@@ -152,10 +169,10 @@ const openModal = () => {
 
 const addItem = (date, category, name, price) => {
     let [year, month, day] = date.split("-");
-    new Month(month);
-    new Day(day, month);
+    new Month(month, year);
+    new Day(day, month, year);
     const receipt = new Receipt(date, category, name, price);
-    if (month === setMonth) receipt.render();
+    if (month === setMonth.month) receipt.render();
 };
 
 const clearInputs = () => {
@@ -293,7 +310,7 @@ const reloadStats = () => {
     document.querySelector(".stats__bar").innerHTML = "";
     for (const category in categories) {
         categories[category].renderSetMonthSum();
-        categories[category].renderStatsBar(year2021[setMonth].sum);
+        categories[category].renderStatsBar(setMonth.sum);
     };
 };
 
@@ -315,35 +332,38 @@ const nextMonthButton = document.querySelector(".info__button--next");
 const year = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopda", "grudzień"];
 
-let index = Number(setMonth) - 1;
+let index = Number(setMonth.month) - 1;
 
 const reloadMonthsNames = () => {
-    setMonth = year[index];
+    let setMonthNumber = year[index];
+    setMonth = storage[todayYear][year[index]];
     currentMonth.textContent = months[index];
     previousMonthButton.textContent = months[index-1];
-    if (Number(setMonth) < Number(todayMonth)) {
+    if (Number(setMonthNumber) < Number(todayMonth)) {
         nextMonthButton.textContent = months[index+1];
     } else {
         nextMonthButton.textContent = "";
     };
-    year2021[setMonth].renderSum();
+    // console.log(setMonth);
+    setMonth.renderSum();
 };
 
 const renderSetMonth = (month) => {
     const wrapper = document.querySelector(".content__list");
     wrapper.textContent = "";
+    // console.log(month);
 
-    if (!year2021[month]) {
+    if (!month) {
         wrapper.textContent = "brak danych";
         document.querySelector(".info__sum").textContent = 0;
-    } else for (const property in year2021[month].days) {
-        year2021[month].days[property].receipts.forEach(receipt => receipt.render());
+    } else for (const day in month.days) {
+        month.days[day].receipts.forEach(receipt => receipt.render());
     };
 };
 
 const changeMonth = () => {
     reloadMonthsNames();
-    renderSetMonth(year[index]);
+    renderSetMonth(setMonth);
     reloadStats();
 };
 
@@ -359,3 +379,5 @@ nextMonthButton.addEventListener("click", () => {
     changeMonth();
 });
 
+
+console.log(storage);
