@@ -40,6 +40,10 @@ module.exports = merge(common, {
     ],
   },
 
+  optimization: {
+    runtimeChunk: 'single',
+  },
+
   devServer: {
     port: 8080,
     host: '0.0.0.0'

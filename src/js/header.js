@@ -1,46 +1,47 @@
-// import {year2021} from './index'
+import {storage, setMonth} from './index';
+import {reloadStats} from './stats';
 
-// const today = new Date().toISOString().slice(0, 10);
-// let [todayYear, todayMonth, todayDay] = today.split("-");
+const currentMonth = document.querySelector(".info__month");
+const previousMonth = document.querySelector(".info__button--previous");
+const nextMonth = document.querySelector(".info__button--next");
 
-// const year = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-// const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopda", "grudzień",]
+const year = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopda", "grudzień"];
 
-// let index = Number(todayMonth) - 1;
+const today = new Date().toISOString().slice(0, 10);
+const [todayYear, todayMonth, todayDay] = today.split("-");
 
-// const currentMonth = document.querySelector(".info__month");
-// const previousMonthButton = document.querySelector(".info__button--previous");
-// const nextMonthButton = document.querySelector(".info__button--next");
+const reloadMonthsNames = (index) => {
+    let setMonthNumber = year[index];
+    currentMonth.textContent = months[index];
+    previousMonth.textContent = months[index-1];
+    if (Number(setMonthNumber) < Number(todayMonth)) {
+        nextMonth.textContent = months[index+1];
+    } else {
+        nextMonth.textContent = "";
+    };
+    setMonth.renderSum();
+};
 
-// currentMonth.textContent = months[index];
-// previousMonthButton.textContent = months[index-1];
-// nextMonthButton.textContent = months[index+1];
+const renderSetMonth = (month) => {
+    const wrapper = document.querySelector(".content__list");
+    wrapper.textContent = "";
 
+    if (!month) {
+        wrapper.textContent = "brak danych";
+        document.querySelector(".info__sum").textContent = 0;
+    } else for (const day in month.days) {
+        month.days[day].receipts.forEach(receipt => receipt.render());
+    };
+};
 
-// const changeMonth = (month) => {
-//     const wrapper = document.querySelector(".content__list");
-//     wrapper.textContent = "";
-
-//     if (!year2021[month]) wrapper.textContent = "brak danych"
-//     else for (const property in year2021[month].days) {
-//         year2021[month].days[property].receipts.forEach(receipt => receipt.render());
-//       }
-//       console.log(year2021[month]);
-// }
-
-// previousMonthButton.addEventListener("click", () => {
-//     index--;
-//     currentMonth.textContent = months[index];
-//     previousMonthButton.textContent = months[index-1];
-//     nextMonthButton.textContent = months[index+1];
-//     changeMonth(year[index]);
-// })
-
-// nextMonthButton.addEventListener("click", () => {
-//     index++;
-//     currentMonth.textContent = months[index];
-//     previousMonthButton.textContent = months[index-1];
-//     nextMonthButton.textContent = months[index+1];
-//     changeMonth(year[index]);
-// })
-
+export const changeMonth = (move) => {
+    let index = year.findIndex(el => el===setMonth.month);
+    if (move === "next") index++
+    else if (move === "prev") index--;
+    let month = storage[todayYear][year[index]];
+    reloadMonthsNames(index);
+    renderSetMonth(month);
+    reloadStats(month);
+    return storage[todayYear][year[index]]
+};
