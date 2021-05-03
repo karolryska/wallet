@@ -11,7 +11,7 @@ const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "l
 const today = new Date().toISOString().slice(0, 10);
 const [todayYear, todayMonth, todayDay] = today.split("-");
 
-const reloadMonthsNames = (index) => {
+const reloadMonthsNames = (index, month) => {
     let setMonthNumber = year[index];
     currentMonth.textContent = months[index];
     previousMonth.textContent = months[index-1];
@@ -20,7 +20,7 @@ const reloadMonthsNames = (index) => {
     } else {
         nextMonth.textContent = "";
     };
-    setMonth.renderSum();
+    month.renderSum();
 };
 
 const renderSetMonth = (month) => {
@@ -40,7 +40,7 @@ export const changeMonth = (move) => {
     if (move === "next") index++
     else if (move === "prev") index--;
     let month = storage[todayYear][year[index]];
-    reloadMonthsNames(index);
+    reloadMonthsNames(index, month);
     renderSetMonth(month);
     reloadStats(month);
     return storage[todayYear][year[index]]
