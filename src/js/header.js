@@ -5,7 +5,7 @@ const currentMonth = document.querySelector(".info__month");
 const previousMonth = document.querySelector(".info__button--previous");
 const nextMonth = document.querySelector(".info__button--next");
 
-const year = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+const year = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopda", "grudzień"];
 
 const today = new Date().toISOString().slice(0, 10);

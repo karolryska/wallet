@@ -98,7 +98,7 @@ export class Receipt {
         this.id = date + "-" + Math.floor(Math.random() * 10000);
         
         let [year, month, day] = date.split("-");
-        this.month = storage[year][month]
+        this.month = storage[year][Number(month)]
         this.month.sum += Number(this.price);
         this.day = this.month.days[day];
         this.day.receipts.push(this);
@@ -135,12 +135,18 @@ let mainScreen = true;
 
 const today = new Date().toISOString().slice(0, 10);
 export let [todayYear, todayMonth, todayDay] = today.split("-");
+todayMonth = Number(todayMonth);
 
 
 if (!storage[todayYear]) storage[todayYear] = new Year();
-if (!storage[todayYear][todayMonth]) storage[todayYear][todayMonth] = new Month(todayMonth, todayYear);
+console.log(storage[todayYear]);
+for (let i = 1; i <= Number(todayMonth); i++) {
+    if (!storage[todayYear][i]) storage[todayYear][i] = new Month(i, todayYear);
+    console.log(storage);
+}
+// if (!storage[todayYear][todayMonth]) storage[todayYear][todayMonth] = new Month(todayMonth, todayYear);
 
-export let setMonth = storage[todayYear][todayMonth];
+export let setMonth = storage[todayYear][Number(todayMonth)];
 changeMonth(setMonth);
 
 previousMonthButton.addEventListener("click", () => {
@@ -169,10 +175,10 @@ const openModal = () => {
 
 const addItem = (date, category, name, price) => {
     let [year, month, day] = date.split("-");
-    new Month(month, year);
-    new Day(day, month, year);
+    new Month(Number(month), year);
+    new Day(day, Number(month), year);
     const receipt = new Receipt(date, category, name, price);
-    if (month === setMonth.month) receipt.render();
+    if (Number(month) === setMonth.month) receipt.render();
 };
 
 const clearInputs = () => {
@@ -191,7 +197,7 @@ let itemToEdit;
 const identifyItemToEdit = (clickedItem) => {
     const itemId = clickedItem.target.parentElement.id;
     let [year, month, day, id] = itemId.split("-");
-    const currentDayReceipts = year2021[month].days[day].receipts;    
+    const currentDayReceipts = storage[year][Number(month)].days[day].receipts;
     return currentDayReceipts.find(receipt => receipt.id === itemId)
 };
 
@@ -283,6 +289,7 @@ addItem("2021-02-10","Rozrywka", "Kino", 24);
 addItem("2021-03-22","Art. spożywcze", "Biedronka", 134);
 addItem("2021-02-12","Rozrywka", "Gokarty", 50);
 addItem("2021-04-02","Rozrywka", "Kręgle", 120);
+addItem("2021-08-02","Rozrywka", "Kręgle", 120);
 
 statsButton.addEventListener("click", () => {
     mainScreen = false;
